@@ -1,0 +1,22 @@
+{
+  "name": "polish-pope-on-discord",
+  "version": "1.0.0",
+  "description": "Discord bot giving points for saying \"2137\" at 9.37pm!",
+  "license": "MIT",
+  "author": "LunarWanderer",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js",
+    "deploy": "node src/utils/deploy-commands.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lunarwanderer13/polish-pope-on-discord"
+  },
+  "dependencies": {
+    "discord.js": "^14.24.2",
+    "dotenv": "^17.2.3"
+  }
+}
