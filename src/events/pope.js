@@ -3,12 +3,12 @@ import fs from "fs"
 export const name = "messageCreate"
 export const once = false
 export function execute(message) {
-    const now = new Date()
+    let now = new Date()
     const hours = now.getHours()
     const minutes = now.getMinutes()
     now = now.toISOString().split("T")[0]
 
-    const yesterday = new Date()
+    let yesterday = new Date()
     yesterday.setDate(yesterday.getDate() - 1)
     yesterday = yesterday.toISOString().split("T")[0]
 
