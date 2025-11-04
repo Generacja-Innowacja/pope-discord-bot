@@ -28,7 +28,7 @@ export function execute(message) {
             pope_list.push(entry)
         }
 
-        if (entry.last_pope !== now) {
+        if (entry.last_pope !== now || entry.popes === 0) {
             entry.popes++
             entry.last_pope === yesterday ? entry.popes_in_a_row++ : entry.popes_in_a_row = 0
             entry.last_pope = now
