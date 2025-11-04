@@ -3,19 +3,19 @@ import fs from "fs"
 export const name = "messageCreate"
 export const once = false
 export function execute(message) {
-    let now = new Date()
-    let hours = now.getHours()
-    let minutes = now.getMinutes()
+    const now = new Date()
+    const hours = now.getHours()
+    const minutes = now.getMinutes()
     now = now.toISOString().split("T")[0]
 
-    let yesterday = new Date()
+    const yesterday = new Date()
     yesterday.setDate(yesterday.getDate() - 1)
     yesterday = yesterday.toISOString().split("T")[0]
 
-    let pope_list = JSON.parse(fs.readFileSync("src/logs/pope.json"))
+    const pope_list = JSON.parse(fs.readFileSync("src/logs/pope.json"))
 
     if (message.content === "2137" && hours === 21 && minutes === 37) {
-        let entry = pope_list.find(e => e.id === message.author.id)
+        const entry = pope_list.find(e => e.id === message.author.id)
 
         if (!entry) {
             entry = {
