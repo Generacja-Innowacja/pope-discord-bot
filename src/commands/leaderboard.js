@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, EmbedBuilder } from "discord.js"
+import { SlashCommandBuilder } from "discord.js"
 import { Pagination } from "pagination.djs"
 import fs from "fs"
 
@@ -18,11 +18,21 @@ export async function execute(interaction) {
     for (let i = 0; i < 5; i++) {
         if (i >= pope_list.length) break
 
-        let member_popes = await interaction.guild.members.fetch(popes_array[i].id)
-        top_popes += `**${i + 1}**. \`${member_popes.displayName}\`\n`
+        try {
+            let member_popes = await interaction.guild.members.fetch(popes_array[i].id)
+            top_popes += `**${i + 1}**. \`${member_popes.displayName}\`\n`
+        } catch(error) {
+            let user = await interaction.client.users.fetch(popes_array[i].id)
+            top_popes += `**${i + 1}**. \`${user.displayName}\`\n`
+        }
 
-        let member_popes_row = await interaction.guild.members.fetch(popes_row_array[i].id)
-        top_popes_row += `**${i + 1}**. \`${member_popes_row.displayName}\`\n`
+        try {
+            let member_popes_row = await interaction.guild.members.fetch(popes_row_array[i].id)
+            top_popes_row += `**${i + 1}**. \`${member_popes_row.displayName}\`\n`
+        } catch(error) {
+            let user = await interaction.client.users.fetch(popes_row_array[i].id)
+            top_popes_row += `**${i + 1}**. \`${user.displayName}\`\n`
+        }
     }
 
     new Pagination(interaction)
