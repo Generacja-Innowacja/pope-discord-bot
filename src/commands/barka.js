@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "discord.js"
+import { SlashCommandBuilder, MessageFlags } from "discord.js"
 import { Pagination } from "pagination.djs"
 
 export const data = new SlashCommandBuilder()
@@ -6,6 +6,13 @@ export const data = new SlashCommandBuilder()
     .setDescription("Zobacz tekst ulubionej piosenki papierza")
 
 export async function execute(interaction) {
+    if (interaction.channel.id != process.env.CHANNEL_ID) {
+        return interaction.reply({
+            content: "Musisz użyć tego w kanale #2137!",
+            flags: MessageFlags.Ephemeral
+        })
+    }
+
     new Pagination(interaction)
         .setTitle("🙏 Barka 🙏")
         .setDescription("tłumaczenie przez ks. Stanisława Szmidta")

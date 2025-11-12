@@ -1,10 +1,17 @@
-import { SlashCommandBuilder } from "discord.js"
+import { SlashCommandBuilder, MessageFlags } from "discord.js"
 
 export const data = new SlashCommandBuilder()
     .setName("timeleftuntilnextpope")
     .setDescription("Returns the time left until the pope hour. Pretty self explanatory.")
 
 export async function execute(interaction) {
+    if (interaction.channel.id != process.env.CHANNEL_ID) {
+        return interaction.reply({
+            content: "Musisz użyć tego w kanale #2137!",
+            flags: MessageFlags.Ephemeral
+        })
+    }
+
     const now = new Date()
 
     const next_pope = new Date()

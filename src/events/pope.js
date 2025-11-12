@@ -1,4 +1,4 @@
-import { AttachmentBuilder } from "discord.js"
+import { AttachmentBuilder, MessageFlags } from "discord.js"
 import fs from "fs"
 import path from "path"
 import "dotenv/config"
@@ -6,6 +6,8 @@ import "dotenv/config"
 export const name = "messageCreate"
 export const once = false
 export function execute(message) {
+    if (message.author.id == process.env.CLIENT_ID) return;
+
     const kremufki = []
     const imagesPath = path.join(process.cwd(), "src", "images", "kremufki")
     const imagesFiles = fs.readdirSync(imagesPath).filter(f => f.endsWith(".png"))
@@ -25,7 +27,14 @@ export function execute(message) {
     const pope_list = JSON.parse(fs.readFileSync("src/logs/pope.json"))
 
     if (message.content === "2137" && hours === 21 && minutes === 37) {
-        const entry = pope_list.find(e => e.id === message.author.id)
+        if (message.channel.id != process.env.CHANNEL_ID) {
+            return message.reply({
+                content: "Możesz pisać 2137 tylko na kanale 2137!",
+                flags: MessageFlags.Ephemeral
+            })
+        }
+
+        let entry = pope_list.find(e => e.id === message.author.id)
 
         if (!entry) {
             entry = {
@@ -53,6 +62,8 @@ export function execute(message) {
                 content: reply_message,
                 files: [attachment]
             })
+
+            message.react("<:kremuuuuufkuuuj_z_tyyyyyym_:1435705908167708743>")
         } else {
             message.reply(`${message.author} nieco za szybko piszesz tą godzine, może poczekaj do jutra co?`)
         }

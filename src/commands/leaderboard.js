@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "discord.js"
+import { SlashCommandBuilder, MessageFlags } from "discord.js"
 import { Pagination } from "pagination.djs"
 import fs from "fs"
 
@@ -7,6 +7,13 @@ export const data = new SlashCommandBuilder()
     .setDescription("Zobacz kto lubi kremówki najbardziej!")
 
 export async function execute(interaction) {
+    if (interaction.channel.id != process.env.CHANNEL_ID) {
+        return interaction.reply({
+            content: "Musisz użyć tego w kanale #2137!",
+            flags: MessageFlags.Ephemeral
+        })
+    }
+
     const pope_list = JSON.parse(fs.readFileSync("src/logs/pope.json"))
 
     const popes_array = [...pope_list].sort((a, b) => b.popes - a.popes)
@@ -20,22 +27,22 @@ export async function execute(interaction) {
 
         try {
             let member_popes = await interaction.guild.members.fetch(popes_array[i].id)
-            top_popes += `**${i + 1}**. \`${member_popes.displayName}\`\n`
+            top_popes += `**${i + 1}**. \`${member_popes.displayName} - ${popes_array[i].popes}\`\n`
         } catch(error) {
             let user = await interaction.client.users.fetch(popes_array[i].id)
-            top_popes += `**${i + 1}**. \`${user.displayName}\`\n`
+            top_popes += `**${i + 1}**. \`${user.displayName} - ${popes_array[i].popes}\`\n`
         }
 
         try {
             let member_popes_row = await interaction.guild.members.fetch(popes_row_array[i].id)
-            top_popes_row += `**${i + 1}**. \`${member_popes_row.displayName}\`\n`
+            top_popes_row += `**${i + 1}**. \`${member_popes_row.displayName} - ${popes_row_array[i].popes_in_a_row}\`\n`
         } catch(error) {
             let user = await interaction.client.users.fetch(popes_row_array[i].id)
-            top_popes_row += `**${i + 1}**. \`${user.displayName}\`\n`
+            top_popes_row += `**${i + 1}**. \`${user.displayName} - ${popes_row_array[i].popes_in_a_row}\`\n`
         }
     }
 
-    new Pagination(interaction)
+    new Pagination(interaction, { type: 1 })
         .setTitle("Tablica kremówkowych wyników")
         .setColor("#69bccd")
 
