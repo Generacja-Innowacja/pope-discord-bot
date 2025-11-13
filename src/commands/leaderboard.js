@@ -50,12 +50,12 @@ export async function execute(interaction) {
             {
                 name: "Top 5 kremówek",
                 value: top_popes,
-                inline: true
+                inline: false
             },
             {
                 name: "Top 5 streak",
                 value: top_popes_row,
-                inline: true
+                inline: false
             }
         ])
 
