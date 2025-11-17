@@ -21,6 +21,7 @@
     "pagination.djs": "^4.0.18"
   },
   "devDependencies": {
+    "node-schedule": "^2.1.1",
     "typescript": "^5.9.3"
   }
 }
