@@ -26,48 +26,55 @@ export function execute(message) {
 
     const pope_list = JSON.parse(fs.readFileSync("src/logs/pope.json"))
 
-    if (message.content === "2137" && hours === 21 && minutes === 37) {
-        if (message.channel.id != process.env.CHANNEL_ID) {
-            return message.reply({
-                content: "Możesz pisać 2137 tylko na kanale 2137!",
-                flags: MessageFlags.Ephemeral
-            })
-        }
-
-        let entry = pope_list.find(e => e.id === message.author.id)
-
-        if (!entry) {
-            entry = {
-                id: message.author.id,
-                popes: 0,
-                popes_in_a_row: 0,
-                last_pope: now
+    if (message.content === "2137") {
+        if (hours === 21 && minutes === 37) {
+            if (message.channel.id != process.env.CHANNEL_ID) {
+                return message.reply({
+                    content: "Możesz pisać 2137 tylko na kanale 2137!",
+                    flags: MessageFlags.Ephemeral
+                })
             }
 
-            pope_list.push(entry)
-        }
+            let entry = pope_list.find(e => e.id === message.author.id)
 
-        if (entry.last_pope !== now || entry.popes === 0) {
-            entry.popes++
-            entry.last_pope === yesterday ? entry.popes_in_a_row++ : entry.popes_in_a_row = 1
-            entry.last_pope = now
+            if (!entry) {
+                entry = {
+                    id: message.author.id,
+                    popes: 0,
+                    popes_in_a_row: 0,
+                    last_pope: now
+                }
 
-            let reply_message = `${message.author} to twoja ${entry.popes} papieżowa, `
-            if (entry.popes_in_a_row > 1) reply_message += `już ${entry.popes_in_a_row} z rzędu, `
-            reply_message += `trzymaj kremówkę! <:kremuuuuufkuuuj_z_tyyyyyym_:1435705908167708743>`
+                pope_list.push(entry)
+            }
 
-            const attachment = new AttachmentBuilder(kremufki[Math.floor(Math.random() * kremufki.length)], { name: "kremufka.png" })
+            if (entry.last_pope !== now || entry.popes === 0) {
+                entry.popes++
+                entry.last_pope === yesterday ? entry.popes_in_a_row++ : entry.popes_in_a_row = 1
+                entry.last_pope = now
 
-            message.reply({
-                content: reply_message,
-                files: [attachment]
-            })
+                let reply_message = `${message.author} to twoja ${entry.popes} papieżowa, `
+                if (entry.popes_in_a_row > 1) reply_message += `już ${entry.popes_in_a_row} z rzędu, `
+                reply_message += `trzymaj kremówkę! <:kremuuuuufkuuuj_z_tyyyyyym_:1435705908167708743>`
 
-            message.react("<:kremuuuuufkuuuj_z_tyyyyyym_:1435705908167708743>")
+                const attachment = new AttachmentBuilder(kremufki[Math.floor(Math.random() * kremufki.length)], { name: "kremufka.png" })
+
+                message.reply({
+                    content: reply_message,
+                    files: [attachment]
+                })
+
+                message.react("<:kremuuuuufkuuuj_z_tyyyyyym_:1435705908167708743>")
+            } else {
+                message.reply({
+                    content: `${message.author} nieco za szybko piszesz tą godzine, może poczekaj do jutra co?`,
+                    flags: MessageFlags.Ephemeral
+                })
+            }
+
+            fs.writeFileSync("src/logs/pope.json", JSON.stringify(pope_list, null, 4))
         } else {
-            message.reply(`${message.author} nieco za szybko piszesz tą godzine, może poczekaj do jutra co?`)
+            message.reply(`Spóźniłeś się po kremówki, jest dopiero ${hours}:${minutes}, wróć o 21:37!`)
         }
-
-        fs.writeFileSync("src/logs/pope.json", JSON.stringify(pope_list, null, 4))
     }
 }
