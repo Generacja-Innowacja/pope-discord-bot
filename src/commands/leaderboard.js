@@ -14,51 +14,47 @@ export async function execute(interaction) {
         })
     }
 
+    await interaction.deferReply()
+
     const pope_list = JSON.parse(fs.readFileSync("src/logs/pope.json"))
+    pope_list.sort((a, b) => b.popes - a.popes)
 
-    const popes_array = [...pope_list].sort((a, b) => b.popes - a.popes)
-    const popes_row_array = [...popes_array].sort((a, b) => b.popes_in_a_row - a.popes_in_a_row)
-
-    let top_popes = ""
-    let top_popes_row = ""
-
-    for (let i = 0; i < 5; i++) {
-        if (i >= pope_list.length) break
-
-        try {
-            let member_popes = await interaction.guild.members.fetch(popes_array[i].id)
-            top_popes += `**${i + 1}**. \`${member_popes.displayName} - ${popes_array[i].popes}\`\n`
-        } catch(error) {
-            let user = await interaction.client.users.fetch(popes_array[i].id)
-            top_popes += `**${i + 1}**. \`${user.displayName} - ${popes_array[i].popes}\`\n`
-        }
-
-        try {
-            let member_popes_row = await interaction.guild.members.fetch(popes_row_array[i].id)
-            top_popes_row += `**${i + 1}**. \`${member_popes_row.displayName} - ${popes_row_array[i].popes_in_a_row}\`\n`
-        } catch(error) {
-            let user = await interaction.client.users.fetch(popes_row_array[i].id)
-            top_popes_row += `**${i + 1}**. \`${user.displayName} - ${popes_row_array[i].popes_in_a_row}\`\n`
-        }
-    }
-
-    new Pagination(interaction, { type: 1 })
+    const leaderboard = new Pagination(interaction, { limit: 1 })
         .setTitle("Tablica kremówkowych wyników")
         .setColor("#69bccd")
 
-        .setFields([
-            {
-                name: "Top 5 kremówek",
-                value: top_popes,
-                inline: false
-            },
-            {
-                name: "Top 5 streak",
-                value: top_popes_row,
-                inline: false
-            }
-        ])
+    const pages = Math.floor(pope_list.length / 10)
+    const last_page = pope_list.length - pages * 10
 
-        .paginateFields()
-        .render()
+    for(let p = 0; p < pages; p++) {
+        let popes = ""
+
+        for(let i = 0; i < 10; i++) {
+            try {
+                const member = await interaction.guild.members.fetch(pope_list[i + p * 10].id)
+                popes += `**${(i + 1) + p * 10}.** ${member} - ${pope_list[i + p * 10].popes} <:kremuuuuufkuuuj_z_tyyyyyym_:1435705908167708743> | ${pope_list[i + p * 10].popes_in_a_row} :fire:\n`
+            } catch(error) {
+                const user = await interaction.client.users.fetch(pope_list[i + p * 10].id)
+                popes += `**${(i + 1) + p * 10}.** ${user} - ${pope_list[i + p * 10].popes} <:kremuuuuufkuuuj_z_tyyyyyym_:1435705908167708743> | ${pope_list[i + p * 10].popes_in_a_row} :fire:\n`
+            }
+        }
+
+        leaderboard.addDescriptions([popes])
+    }
+
+    let popes = ""
+
+    for(let i = 0; i < last_page; i++) {
+        try {
+            const member = await interaction.guild.members.fetch(pope_list[i + pages * 10].id)
+            popes += `**${(i + 1) + pages * 10}.** ${member} - ${pope_list[i + pages * 10].popes} <:kremuuuuufkuuuj_z_tyyyyyym_:1435705908167708743> | ${pope_list[i + pages * 10].popes_in_a_row} :fire:\n`
+        } catch(error) {
+            const user = await interaction.client.users.fetch(pope_list[i + pages * 10].id)
+            popes += `**${(i + 1) + pages * 10}.** ${user} - ${pope_list[i + pages * 10].popes} <:kremuuuuufkuuuj_z_tyyyyyym_:1435705908167708743> | ${pope_list[i + pages * 10].popes_in_a_row} :fire:\n`
+        }
+    }
+
+    leaderboard.addDescriptions([popes])
+
+    leaderboard.render()
 }
