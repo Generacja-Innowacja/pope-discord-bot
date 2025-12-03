@@ -74,7 +74,26 @@ export function execute(message) {
 
             fs.writeFileSync("src/logs/pope.json", JSON.stringify(pope_list, null, 4))
         } else {
-            message.reply(`Spóźniłeś się po kremówki, jest dopiero ${hours}:${minutes}, wróć o 21:37!`)
+            let late_message = ""
+
+            if (hours < 21) {
+                late_message = `Jesteś za wcześnie, jest dopiero ${hours}:${minutes}, wróć o 21:37!`
+            }
+            if (hours === 21 && minutes < 37) {
+                late_message = `Jesteś nieco za wcześnie, jest dopiero ${hours}:${minutes}, wróć o 21:37!`
+            }
+            if (hours === 21 && minutes > 37) {
+                late_message = "Ajj tak blisko, "
+                if (message.author.id == "710795299521822761") {
+                    late_message += "Patryku przestaw ten zegar wreszcie i "
+                }
+                late_message += "wróć jutro o 21:37"
+            }
+            if (hours > 21) {
+                late_message = `Spóźniłeś się po kremówki, jest już ${hours}:${minutes}, gdzieś ty był/a?!`
+            }
+
+            message.reply(late_message)
         }
     }
 }
