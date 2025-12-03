@@ -94,6 +94,10 @@ export function execute(message) {
             }
 
             message.reply(late_message)
+
+            if (hours === 21 && minutes === 38) {
+                message.channel.send("https://tenor.com/view/2137-2138-pope-jan-pawe%C5%82-ii-gif-4135764501454359633")
+            }
         }
     }
 }
