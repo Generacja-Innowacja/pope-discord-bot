@@ -19,7 +19,7 @@ export function execute(message) {
 
     const pope_list = JSON.parse(fs.readFileSync("src/logs/pope.json"))
 
-    if (message.content === "2137") {
+    if (message.content.slice(0, 4) === "2137") {
         if (hours === 21 && minutes === 37) {
             if (message.channel.id != process.env.CHANNEL_ID) {
                 return message.reply({
