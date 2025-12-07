@@ -90,7 +90,7 @@ export function execute(message) {
                 late_message += "wróć jutro o 21:37"
             }
             if (hours > 21) {
-                late_message = `Spóźniłeś się po kremówki, jest już ${hours}:${minutes}, gdzieś ty był/a?!`
+                late_message = `Spóźniłeś/aś się po kremówki, jest już ${hours}:${minutes}, gdzieś ty był/a?!`
             }
 
             message.reply(late_message)
@@ -99,5 +99,9 @@ export function execute(message) {
                 message.channel.send("https://tenor.com/view/2137-2138-pope-jan-pawe%C5%82-ii-gif-4135764501454359633")
             }
         }
+    } else if (message.content.slice(0, 4) === "1237" && hours === 12 && minutes === 37) {
+        let late_message = "Chyba pomyliłeś/aś godziny... Jeśli coś brałeś/aś, podziel się"
+        late_message = late_message.split('').reverse().join('')
+        message.reply(late_message)
     }
 }
