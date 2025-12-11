@@ -19,7 +19,11 @@ export function execute(message) {
 
     const pope_list = JSON.parse(fs.readFileSync("src/logs/pope.json"))
 
-    if (message.content.slice(0, 4) === "2137" || message.content.slice(0, 12).replace(/ /g, "") === "100001011001") {
+    if (message.content.slice(0, 4) === "2137"
+        || message.content.slice(0, 14).replace(/ /g, "") === "0b100001011001"
+        || message.content.slice(0, 6) === "0o4131"
+        || message.content.slice(0, 5) === "0x859"
+        || message.content.slice(0, 21).toLowerCase() === "dwa jeden trzy siedem") {
         let entry = pope_list.find(e => e.id === message.author.id)
 
         if (!entry) {
