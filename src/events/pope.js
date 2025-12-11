@@ -59,9 +59,16 @@ export function execute(message) {
 
                 let reply_message = `${message.author} to twoja ${entry.popes} papieżowa, `
                 if (entry.popes_in_a_row > 1) reply_message += `już ${entry.popes_in_a_row} z rzędu, `
-                reply_message += `trzymaj kremówkę! <:kremuuuuufkuuuj_z_tyyyyyym_:1435705908167708743>`
 
-                const attachment = new AttachmentBuilder(kremufki[Math.floor(Math.random() * kremufki.length)], { name: "kremufka.png" })
+                let attachment
+                if (entry.popes_in_a_row % 100 !== 0) {
+                    reply_message += `trzymaj kremówkę! <:kremuuuuufkuuuj_z_tyyyyyym_:1435705908167708743>`
+                    attachment = new AttachmentBuilder(kremufki[Math.floor(Math.random() * kremufki.length)], { name: "kremufka.png" })
+                } else {
+                    reply_message += `specjalna okazja!!! W nagrodę za twój pokaźny wyczyn, zostajesz nagrodzony złotą kremówką! <:kremuuuuufkuuuj_z_tyyyyyym_:1435705908167708743>`
+                    let golden_kremufka_path = path.join(process.cwd(), "src", "images", "golden_kremufka.png")
+                    attachment = new AttachmentBuilder(golden_kremufka_path, { name: "golden_kremufka.png" })
+                }
 
                 message.reply({
                     content: reply_message,
@@ -88,7 +95,7 @@ export function execute(message) {
                 if (hours === 21 && minutes < 37) {
                     late_message = `Jesteś nieco za wcześnie, jest dopiero ${hours}:${minutes}, wróć o 21:37!`
                 }
-                
+
                 // Late messages
                 if (hours === 21 && minutes > 37) {
                     late_message = "Ajj tak blisko, "
