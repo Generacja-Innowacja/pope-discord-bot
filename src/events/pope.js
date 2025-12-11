@@ -19,7 +19,19 @@ export function execute(message) {
 
     const pope_list = JSON.parse(fs.readFileSync("src/logs/pope.json"))
 
-    if (message.content.slice(0, 4) === "2137" || message.content.slice(0, 12).replace(/ /g, "") === "100001011001") {
+
+
+// to jest tak glupio wrzucone bo chce sprawdzic czy wgl dziala jak jest git to cos pomyslimy o wiekszych zmianach
+    var pope_message;
+    var pope_number_detected = false;
+    //pierwsze znaki bez spacji bo coverujesz other case
+    pope_message = message.content.split(" ")[0];
+    pope_num = Number(pope_message);
+    if (!Number.isNan(pope_num) && pope_num === 2137){
+        pope_number_detected = true;
+    }
+
+    if (message.content.slice(0, 4) === "2137" || message.content.slice(0, 12).replace(/ /g, "") === "100001011001" || pope_number_detected) {
         let entry = pope_list.find(e => e.id === message.author.id)
 
         if (!entry) {
@@ -84,7 +96,7 @@ export function execute(message) {
                 if (hours === 21 && minutes < 37) {
                     late_message = `Jesteś nieco za wcześnie, jest dopiero ${hours}:${minutes}, wróć o 21:37!`
                 }
-                
+
                 // Late messages
                 if (hours === 21 && minutes > 37) {
                     late_message = "Ajj tak blisko, "
