@@ -19,7 +19,7 @@ export function execute(message) {
 
     const pope_list = JSON.parse(fs.readFileSync("src/logs/pope.json"))
 
-    if (message.content.slice(0, 4) === "2137") {
+    if (message.content.slice(0, 4) === "2137" || message.content.slice(0, 12).replace(" ", "") === "100001011001") {
         let entry = pope_list.find(e => e.id === message.author.id)
 
         if (!entry) {
