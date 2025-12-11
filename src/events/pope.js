@@ -20,6 +20,19 @@ export function execute(message) {
     const pope_list = JSON.parse(fs.readFileSync("src/logs/pope.json"))
 
     if (message.content.slice(0, 4) === "2137") {
+        let entry = pope_list.find(e => e.id === message.author.id)
+
+        if (!entry) {
+            entry = {
+                id: message.author.id,
+                popes: 0,
+                popes_in_a_row: 0,
+                last_pope: now
+            }
+
+            pope_list.push(entry)
+        }
+
         if (hours === 21 && minutes === 37) {
             if (message.channel.id != process.env.CHANNEL_ID) {
                 return message.reply({
@@ -33,19 +46,6 @@ export function execute(message) {
             const imagesFiles = fs.readdirSync(imagesPath).filter(f => f.endsWith(".png"))
             for (const image of imagesFiles) {
                 kremufki.push(path.join(imagesPath, image))
-            }
-
-            let entry = pope_list.find(e => e.id === message.author.id)
-
-            if (!entry) {
-                entry = {
-                    id: message.author.id,
-                    popes: 0,
-                    popes_in_a_row: 0,
-                    last_pope: now
-                }
-
-                pope_list.push(entry)
             }
 
             if (entry.last_pope !== now || entry.popes === 0) {
@@ -74,29 +74,36 @@ export function execute(message) {
 
             fs.writeFileSync("src/logs/pope.json", JSON.stringify(pope_list, null, 4))
         } else {
-            let late_message = ""
+            if (entry.last_pope !== now) {
+                let late_message = ""
 
-            if (hours < 21) {
-                late_message = `Jesteś za wcześnie, jest dopiero ${hours}:${minutes}, wróć o 21:37!`
-            }
-            if (hours === 21 && minutes < 37) {
-                late_message = `Jesteś nieco za wcześnie, jest dopiero ${hours}:${minutes}, wróć o 21:37!`
-            }
-            if (hours === 21 && minutes > 37) {
-                late_message = "Ajj tak blisko, "
-                if (message.author.id == "710795299521822761") {
-                    late_message += "Patryku przestaw ten zegar wreszcie i "
+                // Early messages
+                if (hours < 21) {
+                    late_message = `Jesteś za wcześnie, jest dopiero ${hours}:${minutes}, wróć o 21:37!`
                 }
-                late_message += "wróć jutro o 21:37"
-            }
-            if (hours > 21) {
-                late_message = `Spóźniłeś/aś się po kremówki, jest już ${hours}:${minutes}, gdzieś ty był/a?!`
-            }
+                if (hours === 21 && minutes < 37) {
+                    late_message = `Jesteś nieco za wcześnie, jest dopiero ${hours}:${minutes}, wróć o 21:37!`
+                }
+                
+                // Late messages
+                if (hours === 21 && minutes > 37) {
+                    late_message = "Ajj tak blisko, "
+                    if (message.author.id == "710795299521822761") {
+                        late_message += "Patryku przestaw ten zegar wreszcie i "
+                    }
+                    late_message += "wróć jutro o 21:37"
+                }
+                if (hours > 21) {
+                    late_message = `Spóźniłeś/aś się po kremówki, jest już ${hours}:${minutes}, gdzieś ty był/a?!`
+                }
 
-            message.reply(late_message)
+                message.reply(late_message)
 
-            if (hours === 21 && minutes === 38) {
-                message.channel.send("https://tenor.com/view/2137-2138-pope-jan-pawe%C5%82-ii-gif-4135764501454359633")
+                if (hours === 21 && minutes === 38) {
+                    message.channel.send("https://tenor.com/view/2137-2138-pope-jan-pawe%C5%82-ii-gif-4135764501454359633")
+                }
+            } else {
+                message.reply("Już dzisiaj otrzymałeś swoją kremówkę, zostaw trochę dla innych!")
             }
         }
     } else if (message.content.slice(0, 4) === "1237" && hours === 12 && minutes === 37) {
