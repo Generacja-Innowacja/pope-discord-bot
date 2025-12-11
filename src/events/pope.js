@@ -103,7 +103,7 @@ export function execute(message) {
                     message.channel.send("https://tenor.com/view/2137-2138-pope-jan-pawe%C5%82-ii-gif-4135764501454359633")
                 }
             } else {
-                message.reply("Już dzisiaj otrzymałeś swoją kremówkę, zostaw trochę dla innych!")
+                message.reply("Już dzisiaj otrzymałeś/aś swoją kremówkę, zostaw trochę dla innych!")
             }
         }
     } else if (message.content.slice(0, 4) === "1237" && hours === 12 && minutes === 37) {
