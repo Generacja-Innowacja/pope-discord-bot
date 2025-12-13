@@ -58,18 +58,17 @@ export function execute(message) {
                 entry.last_pope = now
 
                 let reply_message = `${message.author} to twoja ${entry.popes} papieżowa, `
+                if (entry.popes_in_a_row > 1) reply_message += `już ${entry.popes_in_a_row} z rzędu, `
                 let attachment
-                if (entry.popes_in_a_row > 1) {
-                    reply_message += `już ${entry.popes_in_a_row} z rzędu, `
 
-                    if (entry.popes_in_a_row % 100 !== 0) {
-                        reply_message += `trzymaj kremówkę! <:kremuuuuufkuuuj_z_tyyyyyym_:1435705908167708743>`
-                        attachment = new AttachmentBuilder(kremufki[Math.floor(Math.random() * kremufki.length)], { name: "kremufka.png" })
-                    } else {
-                        reply_message += `specjalna okazja!!! W nagrodę za twój pokaźny wyczyn, zostajesz nagrodzony złotą kremówką! <:kremuuuuufkuuuj_z_tyyyyyym_:1435705908167708743>`
-                        let golden_kremufka_path = path.join(process.cwd(), "src", "images", "golden_kremufka.png")
-                        attachment = new AttachmentBuilder(golden_kremufka_path, { name: "golden_kremufka.png" })
-                    }
+                if (entry.popes_in_a_row > 0 && entry.popes_in_a_row % 100 === 0) {
+                    reply_message += `specjalna okazja!!! W nagrodę za twój pokaźny wyczyn, zostajesz nagrodzony złotą kremówką! <:kremuuuuufkuuuj_z_tyyyyyym_:1435705908167708743>`
+                    let golden_kremufka_path = path.join(process.cwd(), "src", "images", "golden_kremufka.png")
+                    attachment = new AttachmentBuilder(golden_kremufka_path, { name: "golden_kremufka.png" })
+                } else {
+                    reply_message += `trzymaj kremówkę! <:kremuuuuufkuuuj_z_tyyyyyym_:1435705908167708743>`
+                    let kremufka_path = kremufki[Math.floor(Math.random() * kremufki.length)]
+                    attachment = new AttachmentBuilder(kremufka_path, { name: "kremufka.png" })
                 }
 
                 message.reply({
