@@ -28,7 +28,8 @@ export function execute(message) {
     if (message_content.search("szczęść boże") >= 0) {
         const responses = [
             "Szczęść Boże!",
-            "Na wieki wieków!"
+            "Na wieki wieków!",
+            "Bóg zapłać"
         ]
 
         const response = responses[Math.floor(Math.random() * responses.length)]
