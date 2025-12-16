@@ -3,7 +3,7 @@ import "dotenv/config"
 
 export const name = "messageCreate"
 export const once = false
-export function execute(message) {
+export async function execute(message) {
     if (message.author.id == process.env.CLIENT_ID) return;
 
     const flags = JSON.parse(fs.readFileSync("src/logs/flags.json"))
@@ -19,9 +19,9 @@ export function execute(message) {
 
         flags.good_day_is_typing = true
         fs.writeFileSync("src/logs/flags.json", JSON.stringify(flags, null, 4))
-        message.reply("Co chcesz przez to powiedzieć?")
 
         const lines = [
+            "Co chcesz przez to powiedzieć?",
             "Czy życzysz mi dobrego dnia;",
             "czy oznajmiasz, że dzień jest dobry,",
             "niezależnie od tego, co ja o nim myślę;",
@@ -30,9 +30,13 @@ export function execute(message) {
         ]
 
         let line = 0
+        let response = lines[line]
+        let reply_message = await message.reply(response)
+
         const interval = setInterval(() => {
-            message.channel.send(lines[line])
             line++
+            response += `\n${lines[line]}`
+            reply_message.edit(response)
 
             if (line > 4) {
                 flags.good_day_is_typing = false
