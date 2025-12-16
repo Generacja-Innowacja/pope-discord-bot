@@ -88,13 +88,16 @@ export function execute(message) {
         } else {
             if (entry.last_pope !== now) {
                 let late_message = ""
+                let time = `${hours}:`
+                if (minutes < 10) time += "0"
+                time += `${minutes}`
 
                 // Early messages
                 if (hours < 21) {
-                    late_message = `Jesteś za wcześnie, jest dopiero ${hours}:${minutes}, wróć o 21:37!`
+                    late_message = `Jesteś za wcześnie, jest dopiero ${time}, wróć o 21:37!`
                 }
                 if (hours === 21 && minutes < 37) {
-                    late_message = `Jesteś nieco za wcześnie, jest dopiero ${hours}:${minutes}, wróć o 21:37!`
+                    late_message = `Jesteś nieco za wcześnie, jest dopiero ${time}, wróć o 21:37!`
                 }
 
                 // Late messages
@@ -106,7 +109,7 @@ export function execute(message) {
                     late_message += "wróć jutro o 21:37"
                 }
                 if (hours > 21) {
-                    late_message = `Spóźniłeś/aś się po kremówki, jest już ${hours}:${minutes}, gdzieś ty był/a?!`
+                    late_message = `Spóźniłeś/aś się po kremówki, jest już ${time}, gdzieś ty był/a?!`
                 }
 
                 message.reply(late_message)
