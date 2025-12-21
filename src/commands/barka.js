@@ -1,5 +1,6 @@
 import { SlashCommandBuilder, MessageFlags } from "discord.js"
 import { Pagination } from "pagination.djs"
+import fs from "fs"
 
 export const data = new SlashCommandBuilder()
     .setName("barka")
@@ -12,6 +13,27 @@ export async function execute(interaction) {
             flags: MessageFlags.Ephemeral
         })
     }
+
+    const wrapped = JSON.parse(fs.readFileSync("src/logs/wrapped.json"))
+    let wrapped_entry = wrapped.find(e => e.id === interaction.user.id)
+
+    if (!wrapped_entry) {
+        entry = {
+            id: interaction.user.id,
+            username: interaction.user.username,
+            popes: 0,
+            most_popes_in_a_row: 0,
+            gandalf: 0,
+            bible: 0,
+            barka: 0,
+            one_min_late: 0
+        }
+
+        wrapped.push(wrapped_entry)
+    }
+
+    // In case someone changed their username
+    wrapped_entry.username = interaction.user.username
 
     new Pagination(interaction)
         .setTitle("🙏 Barka 🙏")
@@ -71,4 +93,7 @@ export async function execute(interaction) {
 
         .paginateFields()
         .render()
+
+    wrapped_entry.barka++
+    fs.writeFileSync("src/logs/wrapped.json", JSON.stringify(wrapped, null, 4))
 }

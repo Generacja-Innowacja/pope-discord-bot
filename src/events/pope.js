@@ -18,6 +18,7 @@ export function execute(message) {
     yesterday = yesterday.toISOString().split("T")[0]
 
     const pope_list = JSON.parse(fs.readFileSync("src/logs/pope.json"))
+    const wrapped = JSON.parse(fs.readFileSync("src/logs/wrapped.json"))
 
     if (message.content.slice(0, 4) === "2137"
         || message.content.slice(0, 14) === "0b100001011001"
@@ -25,10 +26,12 @@ export function execute(message) {
         || message.content.slice(0, 5) === "0x859"
         || message.content.slice(0, 21).toLowerCase() === "dwa jeden trzy siedem") {
         let entry = pope_list.find(e => e.id === message.author.id)
+        let wrapped_entry = wrapped.find(e => e.id === message.author.id)
 
         if (!entry) {
             entry = {
                 id: message.author.id,
+                username: message.author.username,
                 popes: 0,
                 popes_in_a_row: 0,
                 last_pope: now
@@ -36,6 +39,25 @@ export function execute(message) {
 
             pope_list.push(entry)
         }
+
+        if (!wrapped_entry) {
+            entry = {
+                id: message.author.id,
+                username: message.author.username,
+                popes: entry.popes,
+                most_popes_in_a_row: entry.popes_in_a_row,
+                gandalf: 0,
+                bible: 0,
+                barka: 0,
+                one_min_late: 0
+            }
+
+            wrapped.push(wrapped_entry)
+        }
+
+        // In case someone changed their username
+        entry.username = message.author.username
+        wrapped_entry.username = entry.username
 
         if (message.channel.id != process.env.CHANNEL_ID) {
             return message.reply({
@@ -56,6 +78,9 @@ export function execute(message) {
                 entry.popes++
                 entry.last_pope === yesterday ? entry.popes_in_a_row++ : entry.popes_in_a_row = 1
                 entry.last_pope = now
+
+                wrapped_entry.popes = entry.popes
+                if (entry.popes_in_a_row > wrapped_entry.most_popes_in_a_row) wrapped_entry.most_popes_in_a_row = entry.popes_in_a_row
 
                 let reply_message = `${message.author} to twoja ${entry.popes} papieżowa, `
                 if (entry.popes_in_a_row > 1) reply_message += `już ${entry.popes_in_a_row} z rzędu, `
@@ -85,6 +110,7 @@ export function execute(message) {
             }
 
             fs.writeFileSync("src/logs/pope.json", JSON.stringify(pope_list, null, 4))
+            fs.writeFileSync("src/logs/wrapped.json", JSON.stringify(wrapped, null, 4))
         } else {
             if (entry.last_pope !== now) {
                 let late_message = ""
@@ -115,6 +141,8 @@ export function execute(message) {
                 message.reply(late_message)
 
                 if (hours === 21 && minutes === 38) {
+                    wrapped_entry.one_min_late++
+                    fs.writeFileSync("src/logs/wrapped.json", JSON.stringify(wrapped, null, 4))
                     message.channel.send("https://tenor.com/view/2137-2138-pope-jan-pawe%C5%82-ii-gif-4135764501454359633")
                 }
             } else {

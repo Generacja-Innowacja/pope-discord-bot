@@ -17,6 +17,27 @@ export async function execute(message) {
         // czy sam się dobrze tego ranka czujesz,
         // czy może uważasz, że dzisiaj należy być dobrym?
 
+        const wrapped = JSON.parse(fs.readFileSync("src/logs/wrapped.json"))
+        let wrapped_entry = wrapped.find(e => e.id === message.author.id)
+
+        if (!wrapped_entry) {
+            entry = {
+                id: message.author.id,
+                username: message.author.username,
+                popes: 0,
+                most_popes_in_a_row: 0,
+                gandalf: 0,
+                bible: 0,
+                barka: 0,
+                one_min_late: 0
+            }
+
+            wrapped.push(wrapped_entry)
+        }
+
+        // In case someone changed their username
+        wrapped_entry.username = message.author.username
+
         flags.good_day_is_typing = true
         fs.writeFileSync("src/logs/flags.json", JSON.stringify(flags, null, 4))
 
@@ -41,6 +62,10 @@ export async function execute(message) {
             if (line > 4) {
                 flags.good_day_is_typing = false
                 fs.writeFileSync("src/logs/flags.json", JSON.stringify(flags, null, 4))
+
+                wrapped_entry.gandalf++
+                fs.writeFileSync("src/logs/wrapped.json", JSON.stringify(wrapped, null, 4))
+
                 clearInterval(interval)
             }
         }, 2000)
