@@ -41,7 +41,7 @@ export function execute(message) {
         }
 
         if (!wrapped_entry) {
-            entry = {
+            wrapped_entry = {
                 id: message.author.id,
                 username: message.author.username,
                 popes: entry.popes,
