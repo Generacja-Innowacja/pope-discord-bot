@@ -46,6 +46,7 @@ export async function execute(interaction) {
 
     // In case someone changed their username
     wrapped_entry.username = target.username
+    fs.writeFileSync("src/logs/wrapped.json", JSON.stringify(wrapped, null, 4))
 
     const WrappedEmbed = new EmbedBuilder()
         .setTitle(`PopeWrapped™ ${new Date().getFullYear()}`)
