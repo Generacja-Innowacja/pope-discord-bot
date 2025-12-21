@@ -11,11 +11,14 @@ schedule.scheduleJob("40 21 * * *", () => {
     now = now.toISOString().split("T")[0]
     const data = JSON.parse(fs.readFileSync("src/logs/pope.json"))
 
+    let users = 0
     for (const user of data) {
         if (user.last_pope !== now) {
             user.popes_in_a_row = 0
+            users++
         }
     }
 
     fs.writeFileSync("src/logs/pope.json", JSON.stringify(data, null, 4))
+    log("LOG", `Resetted streaks of ${users} users.`)
 })
