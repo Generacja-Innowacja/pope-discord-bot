@@ -8,7 +8,7 @@ export const once = false
 export function execute(message) {
     if (message.author.id == process.env.CLIENT_ID) return;
 
-    let now = new Date()
+    let now = new Date(message.createdAt)
     const hours = now.getHours()
     const minutes = now.getMinutes()
     now = now.toISOString().split("T")[0]
@@ -20,11 +20,20 @@ export function execute(message) {
     const pope_list = JSON.parse(fs.readFileSync("src/logs/pope.json"))
     const wrapped = JSON.parse(fs.readFileSync("src/logs/wrapped.json"))
 
-    if (message.content.slice(0, 4) === "2137"
-        || message.content.slice(0, 14) === "0b100001011001"
-        || message.content.slice(0, 6) === "0o4131"
-        || message.content.slice(0, 5) === "0x859"
-        || message.content.slice(0, 21).toLowerCase() === "dwa jeden trzy siedem") {
+    // let result;
+    // try {
+    //     result = eval(message.content)
+    // } catch {
+    //     result = null
+    // }
+
+    if (message.content.slice(0, 4) === "2137" // decimal
+        || message.content.slice(0, 14) === "0b100001011001" // binary
+        || message.content.slice(0, 6) === "0o4131" // octal
+        || message.content.slice(0, 5) === "0x859" // hexadecimal
+        || message.content.slice(0, 21).toLowerCase() === "dwa jeden trzy siedem"
+        || message.content.slice(0, 34).toLowerCase() === "dwa tysiące sto trzydzieści siedem"
+        /*|| (!(message.content.search("fs") >= 0) && result === 2137)*/) {
         let entry = pope_list.find(e => e.id === message.author.id)
         let wrapped_entry = wrapped.find(e => e.id === message.author.id)
 
