@@ -26,7 +26,7 @@ export async function execute(interaction) {
         .setFields(
             {
                 name: `${kremufka} Kremufki ${kremufka}`,
-                value: `Zjadłxś ${target.popes} ${kremufka}`,
+                value: `Zjadłeś/aś ${target.popes} ${kremufka}`,
                 inline: true
             },
             {
