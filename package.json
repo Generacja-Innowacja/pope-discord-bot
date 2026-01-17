@@ -1,15 +1,14 @@
 {
   "name": "polish-pope-on-discord",
-  "version": "2.2.1",
+  "version": "3.0.1",
   "description": "Discord bot giving points for saying \"2137\" at 9.37pm!",
   "license": "MIT",
   "author": "LunarWanderer",
   "type": "module",
-  "main": "index.js",
+  "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index.js",
-    "deploy": "node src/utils/deploy-commands.js"
+    "start": "tsx src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -18,10 +17,11 @@
   "dependencies": {
     "discord.js": "^14.25.1",
     "dotenv": "^17.2.3",
-    "pagination.djs": "^4.0.18"
+    "pagination.djs": "^4.0.18",
+    "typescript": "^5.9.3",
+    "node-schedule": "^2.1.1"
   },
   "devDependencies": {
-    "node-schedule": "^2.1.1",
-    "typescript": "^5.9.3"
+    "tsx": "^4.21.0"
   }
 }
