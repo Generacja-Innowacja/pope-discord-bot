@@ -21,7 +21,7 @@ export const Barka: Command = {
             }
 
         const wrapped = JSON.parse(fs.readFileSync("src/logs/wrapped.json", "utf-8"))
-        let wrapped_entry: WrappedEntry | undefined = wrapped.find((e: WrappedEntry) => e.id === interaction.user.id)
+        let wrapped_entry: WrappedEntry | undefined = wrapped.find((entry: WrappedEntry) => entry.id === interaction.user.id)
 
         if (!wrapped_entry) {
             wrapped_entry = {
