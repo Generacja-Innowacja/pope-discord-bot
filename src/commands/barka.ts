@@ -7,8 +7,7 @@ import "dotenv/config"
 export const Barka: Command = {
     data: new SlashCommandBuilder()
         .setName("barka")
-        .setDescription("Zobacz teskt ulubionej piosenki papieża")
-        .setContexts([0]),
+        .setDescription("Zobacz teskt ulubionej piosenki papieża"),
 
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
         if (!interaction.guild || !interaction.channel ||

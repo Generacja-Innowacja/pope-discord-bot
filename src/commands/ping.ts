@@ -4,8 +4,7 @@ import { Command } from "../utils/config"
 export const Ping: Command = {
     data: new SlashCommandBuilder()
         .setName("ping")
-        .setDescription("Replies with pong!")
-        .setContexts([0, 1, 2]),
+        .setDescription("Replies with pong!"),
 
     async execute(interaction: ChatInputCommandInteraction) {
         await interaction.reply({
