@@ -26,6 +26,14 @@ export const Emojis: Emoji[] = [
     }
 ]
 
+export interface PopeEntry {
+    id: string,
+    username: string,
+    popes: number,
+    popes_in_a_row: number,
+    last_pope: string
+}
+
 export interface WrappedEntry {
     id: string,
     username: string,

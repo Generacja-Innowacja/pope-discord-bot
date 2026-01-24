@@ -5,10 +5,12 @@ import "dotenv/config"
 // Import commands
 import { Ping } from "./commands/ping"
 import { Barka } from "./commands/barka"
+import { Kremufki } from "./commands/kremufki"
 
 export const Commands: Command[] = [
     Ping,
-    Barka
+    Barka,
+    Kremufki
 ]
 
 // Import events
