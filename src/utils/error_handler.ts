@@ -20,6 +20,8 @@ export function error(interaction: ChatInputCommandInteraction, type: string = "
         .setTitle("Error code 418: I'm a teapot")
 
     switch (type.toLowerCase()) {
+        case "slashcommand":
+            errorEmbed.setDescription("Command not found.")
         case "channel":
             errorEmbed.setDescription(`This command can only be ran in the ${interaction.client.channels.fetch(process.env.CHANNEL_ID!)} channel.`)
         case "emoji":

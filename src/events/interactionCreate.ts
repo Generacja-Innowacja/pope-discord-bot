@@ -1,19 +1,13 @@
 import { Client, Interaction, ChatInputCommandInteraction, EmbedBuilder, MessageFlags } from "discord.js"
 import { Commands } from "./../index"
+import { error } from "src/utils/error_handler"
 import "dotenv/config"
 
 async function handleSlashCommand(interaction: ChatInputCommandInteraction): Promise<void> {
     const slashCommand = Commands.find(command => command.data.name === interaction.commandName)
 
     // Command not found
-    if (!slashCommand) {
-        await interaction.reply({
-            content: "An error has occured",
-            flags: MessageFlags.Ephemeral
-        })
-
-        return
-    }
+    if (!slashCommand) return error(interaction, "slashCommand", true)
 
     await slashCommand.execute(interaction)
 }
