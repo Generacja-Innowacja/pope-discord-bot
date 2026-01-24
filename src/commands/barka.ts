@@ -1,6 +1,7 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder, MessageFlags } from "discord.js"
 import { Pagination } from "pagination.djs"
 import { Command, Color, WrappedEntry } from "src/utils/config"
+import { error } from "src/utils/error_handler"
 import fs from "fs"
 import "dotenv/config"
 
@@ -10,17 +11,12 @@ export const Barka: Command = {
         .setDescription("Zobacz teskt ulubionej piosenki papieża"),
 
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-        if (!interaction.guild || !interaction.channel ||
-            !interaction.channel.isTextBased() || interaction.channel.id != process.env.CHANNEL_ID) {
-                const channel_error_embed: EmbedBuilder = new EmbedBuilder()
-                    .setColor(Color.accent)
-                    .setTitle(`Możesz śpiewać barkę jedynie w kanale ${interaction.guild!.channels.fetch(process.env.CHANNEL_ID!)}`)
+        if (!interaction.guild ||
+            !interaction.channel ||
+            !interaction.channel.isTextBased() ||
+            interaction.channel.id != process.env.CHANNEL_ID) return error(interaction, "channel", false)
 
-                interaction.reply({ embeds: [channel_error_embed], flags: MessageFlags.Ephemeral })
-                return
-            }
-
-        const wrapped = JSON.parse(fs.readFileSync("src/logs/wrapped.json", "utf-8"))
+        const wrapped: WrappedEntry[] = JSON.parse(fs.readFileSync("src/logs/wrapped.json", "utf-8"))
         let wrapped_entry: WrappedEntry | undefined = wrapped.find((entry: WrappedEntry) => entry.id === interaction.user.id)
 
         if (!wrapped_entry) {
