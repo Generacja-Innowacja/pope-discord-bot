@@ -37,9 +37,9 @@ export const Barka: Command = {
         wrapped_entry.username = interaction.user.username
 
         new Pagination(interaction)
+            .setColor(Color.primary)
             .setTitle("🙏 Barka 🙏")
             .setDescription("tłumaczenie przez ks. Stanisława Szmidta")
-            .setColor("#69bccd")
 
             .setFields([
                 {
