@@ -1,5 +1,6 @@
 import { ChatInputCommandInteraction, EmbedBuilder, MessageFlags } from "discord.js"
 import { Color } from "./config"
+import "dotenv/config"
 
 async function sendReport(interaction: ChatInputCommandInteraction, embed: EmbedBuilder): Promise<void> {
     embed
