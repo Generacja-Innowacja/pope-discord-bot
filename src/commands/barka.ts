@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder, MessageFlags } from "discord.js"
+import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js"
 import { Pagination } from "pagination.djs"
 import { Command, Color, WrappedEntry } from "src/utils/config"
 import { error } from "src/utils/error_handler"

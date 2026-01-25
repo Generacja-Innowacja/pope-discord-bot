@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder, MessageFlags } from "discord.js"
+import { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder } from "discord.js"
 import { Command, Color, Emoji, Emojis, PopeEntry } from "src/utils/config"
 import { error } from "src/utils/error_handler"
 import fs from "fs"
