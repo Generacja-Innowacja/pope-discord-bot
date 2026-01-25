@@ -22,8 +22,10 @@ export function error(interaction: ChatInputCommandInteraction, type: string = "
     switch (type.toLowerCase()) {
         case "slashcommand":
             errorEmbed.setDescription("Command not found.")
+            break
         case "channel":
             errorEmbed.setDescription(`This command can only be ran in the ${interaction.client.channels.fetch(process.env.CHANNEL_ID!)} channel.`)
+            break
         case "emoji":
             errorEmbed.setDescription("Unable to access the application's emoji.")
             break
