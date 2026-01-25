@@ -9,8 +9,15 @@ export const Kremufki: Command = {
         .setDescription("Kremufkuj!"),
 
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+        if (!interaction.guild ||
+            !interaction.channel ||
+            !interaction.channel.isTextBased() ||
+            interaction.channel.id != process.env.CHANNEL_ID) return await error(interaction, "channel", false)
+
+        interaction.deferReply()
+
         const kremufka_emoji: Emoji | undefined = Emojis.find(emoji => emoji.name === "cards")
-        if (!kremufka_emoji) return error(interaction, "emoji", true)
+        if (!kremufka_emoji) return await error(interaction, "emoji", true)
         const kremufka_emoji_string: string = `<:${kremufka_emoji.name}:${kremufka_emoji.id}>`
 
         const pope_list: PopeEntry[] = JSON.parse(fs.readFileSync("src/logs/pope.json", "utf-8"))
