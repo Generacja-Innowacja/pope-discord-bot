@@ -1,7 +1,6 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder } from "discord.js"
-import { Command, Color, Emoji, Emojis, PopeEntry } from "src/utils/config"
+import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js"
+import { Command } from "src/utils/config"
 import { error } from "src/utils/error_handler"
-import fs from "fs"
 
 export const TimeLeftUntilNextPope: Command = {
     data: new SlashCommandBuilder()
