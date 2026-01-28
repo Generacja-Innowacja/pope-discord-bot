@@ -1,20 +1,22 @@
-import { ChatInputCommandInteraction, EmbedBuilder, MessageFlags } from "discord.js"
+import { ChatInputCommandInteraction, Message, User, EmbedBuilder, MessageFlags, email } from "discord.js"
 import { Color } from "./config"
 import "dotenv/config"
 
-async function sendReport(interaction: ChatInputCommandInteraction, embed: EmbedBuilder): Promise<void> {
+async function sendReport(interaction: ChatInputCommandInteraction | Message, embed: EmbedBuilder): Promise<void> {
+    let target: User = interaction instanceof Message ? interaction.author : interaction.user
+
     embed
         .setTimestamp(Date.now())
         .setAuthor({
-            name: `${interaction.user.username} (${interaction.user.id})`,
-            iconURL: interaction.user.avatarURL() ?? undefined
+            name: `${target.username} (${target.id})`,
+            iconURL: target.avatarURL() ?? undefined
         })
 
     const owner = await interaction.client.users.fetch(process.env.OWNER_ID!)
     owner.send({ embeds: [embed] })
 }
 
-export async function error(interaction: ChatInputCommandInteraction, type: string = "error", report: boolean = false): Promise<void> {
+export async function error(interaction: ChatInputCommandInteraction | Message, type: string = "error", report: boolean = false): Promise<void> {
     const errorEmbed: EmbedBuilder = new EmbedBuilder()
         .setColor(Color.accent)
         .setTitle("Error code 418: I'm a teapot")
@@ -49,6 +51,12 @@ export async function error(interaction: ChatInputCommandInteraction, type: stri
 
     errorEmbed.setDescription(description)
 
-    interaction.reply({ embeds: [errorEmbed], flags: MessageFlags.Ephemeral })
+    if (interaction instanceof ChatInputCommandInteraction) {
+        interaction.reply({ embeds: [errorEmbed], flags: MessageFlags.Ephemeral })
+    }
+    if (interaction instanceof Message && interaction.channel.isSendable()) {
+        interaction.channel.send({ embeds: [errorEmbed] })
+    }
+
     if (report) sendReport(interaction, errorEmbed)
 }
