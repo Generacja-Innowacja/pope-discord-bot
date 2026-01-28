@@ -21,7 +21,7 @@ export async function execute(message) {
         let wrapped_entry = wrapped.find(e => e.id === message.author.id)
 
         if (!wrapped_entry) {
-            entry = {
+            wrapped_entry = {
                 id: message.author.id,
                 username: message.author.username,
                 popes: 0,
