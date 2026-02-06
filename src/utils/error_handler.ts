@@ -27,6 +27,9 @@ export async function error(interaction: ChatInputCommandInteraction | Message, 
         case "slashcommand":
             description = "Command not found."
             break
+        case "user":
+            description = "User not found."
+            break
         case "channel":
             const guild = await interaction.client.guilds.fetch(process.env.GUILD_ID!)
             if (!guild || interaction.guild !== guild) {
