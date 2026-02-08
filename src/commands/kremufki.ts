@@ -14,9 +14,7 @@ export const Kremufki: Command = {
             !interaction.channel.isTextBased() ||
             interaction.channel.id != process.env.CHANNEL_ID) return await error(interaction, "channel", false)
 
-        interaction.deferReply()
-
-        const kremufka_emoji: Emoji | undefined = Emojis.find(emoji => emoji.name === "cards")
+        const kremufka_emoji: Emoji | undefined = Emojis.find(emoji => emoji.name === "kremuuuuufkuuuj_z_tyyyyyym_")
         if (!kremufka_emoji) return await error(interaction, "emoji", true)
         const kremufka_emoji_string: string = `<:${kremufka_emoji.name}:${kremufka_emoji.id}>`
 
