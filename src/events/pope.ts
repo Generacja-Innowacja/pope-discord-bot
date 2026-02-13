@@ -1,8 +1,25 @@
 import { Client, Message, AttachmentBuilder, MessageFlags } from "discord.js"
 import { Emoji, Emojis, PopeEntry, default_pope_entry, WrappedEntry, default_wrapped_entry } from "src/utils/config"
 import { error } from "src/utils/error_handler"
+import { Parser } from "expr-eval"
 import fs from "fs"
 import path from "path"
+
+async function checkForPope(message_content: string): Promise<boolean> {
+    const parser = new Parser()
+
+    try {
+        if (message_content.length > 100) return false;
+
+        const result = parser.evaluate(message_content)
+
+        if (isNaN(result) || !Number.isFinite(result)) return false
+
+        return result === 2137
+    } catch {
+        return false
+    }
+}
 
 export default (client: Client): void => {
     client.on("messageCreate", async (message: Message) => {
@@ -23,7 +40,7 @@ export default (client: Client): void => {
         yesterday.setDate(yesterday.getDate() - 1)
         yesterday = yesterday.toISOString().split("T")[0]
 
-        if (message.content.includes("2137")) {
+        if (await checkForPope(message.content)) {
             const pope_list = JSON.parse(fs.readFileSync(path.join(process.cwd(), "src", "logs", "pope.json"), "utf-8"))
             const wrapped_list = JSON.parse(fs.readFileSync(path.join(process.cwd(), "src", "logs", "wrapped.json"), "utf-8"))
 
