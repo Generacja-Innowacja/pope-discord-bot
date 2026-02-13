@@ -20,6 +20,7 @@ export const Commands: Command[] = [
 // Import events
 import clientReady from "./events/clientReady"
 import interactionCreate from "./events/interactionCreate"
+import pope from "./events/pope"
 
 export const client: Client<boolean> = new Client({
     intents: Object.values(GatewayIntentBits).filter((intent): intent is number => typeof intent === "number")
@@ -27,6 +28,7 @@ export const client: Client<boolean> = new Client({
 
 clientReady(client)
 interactionCreate(client)
+pope(client)
 
 // Login with the bot
 client.login(process.env.TOKEN)
