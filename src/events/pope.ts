@@ -121,7 +121,7 @@ export default (client: Client): void => {
                 fs.writeFileSync(path.join(process.cwd(), "src", "logs", "pope.json"), JSON.stringify(pope_list, null, 4))
                 fs.writeFileSync(path.join(process.cwd(), "src", "logs", "wrapped.json"), JSON.stringify(wrapped_list, null, 4))
             } else {
-                if (pope_entry.last_pope !== now) {
+                if (pope_entry.last_pope !== now || pope_entry.popes === 0) {
                     let late_message: string = ""
                     let time: string = `${hours}:`
                     if (minutes < 10) time += "0"
