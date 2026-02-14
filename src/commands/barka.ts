@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js"
 import { Pagination } from "pagination.djs"
-import { Command, Color, WrappedEntry } from "src/utils/config"
+import { Command, Color, WrappedEntry, default_wrapped_entry } from "src/utils/config"
 import { error } from "src/utils/error_handler"
 import fs from "fs"
 import path from "path"
@@ -16,24 +16,20 @@ export const Barka: Command = {
             !interaction.channel.isTextBased() ||
             interaction.channel.id != process.env.CHANNEL_ID) return error(interaction, "channel", false)
 
-        const wrapped: WrappedEntry[] = JSON.parse(fs.readFileSync(path.join(process.cwd(), "src", "logs", "wrapped.json"), "utf-8"))
-        let wrapped_entry: WrappedEntry | undefined = wrapped.find((entry: WrappedEntry) => entry.id === interaction.user.id)
+        // Load JSON and find entry
+        const wrapped_list: WrappedEntry[] = JSON.parse(fs.readFileSync(path.join(process.cwd(), "src", "logs", "wrapped.json"), "utf-8"))
+        let wrapped_entry: WrappedEntry | undefined = wrapped_list.find((entry: WrappedEntry) => entry.id === interaction.user.id)
 
+        // Default wrapped entry assignment
         if (!wrapped_entry) {
-            wrapped_entry = {
-                id: interaction.user.id,
-                username: interaction.user.username,
-                popes: 0,
-                most_popes_in_a_row: 0,
-                gandalf: 0,
-                bible: 0,
-                barka: 0,
-                one_min_late: 0
-            }
+            wrapped_entry = { ...default_wrapped_entry }
+            wrapped_entry.id = interaction.user.id
+            wrapped_entry.username = interaction.user.username
 
-            wrapped.push(wrapped_entry)
+            wrapped_list.push(wrapped_entry)
         }
 
+        // In case someone has changed their username, update it
         wrapped_entry.username = interaction.user.username
 
         new Pagination(interaction)
@@ -96,6 +92,6 @@ export const Barka: Command = {
             .render()
 
         wrapped_entry.barka++
-        fs.writeFileSync(path.join(process.cwd(), "src", "logs", "wrapped.json"), JSON.stringify(wrapped, null, 4), "utf-8")
+        fs.writeFileSync(path.join(process.cwd(), "src", "logs", "wrapped.json"), JSON.stringify(wrapped_list, null, 4), "utf-8")
     }
 }

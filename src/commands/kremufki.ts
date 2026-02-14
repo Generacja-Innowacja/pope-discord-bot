@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder } from "discord.js"
-import { Command, Color, Emoji, Emojis, PopeEntry } from "src/utils/config"
+import { Command, Color, Emoji, Emojis, PopeEntry, default_pope_entry } from "src/utils/config"
 import { error } from "src/utils/error_handler"
 import fs from "fs"
 import path from "path"
@@ -19,19 +19,18 @@ export const Kremufki: Command = {
         if (!kremufka_emoji) return await error(interaction, "emoji", true)
         const kremufka_emoji_string: string = `<:${kremufka_emoji.name}:${kremufka_emoji.id}>`
 
+        // Load JSON and find entry
         const pope_list: PopeEntry[] = JSON.parse(fs.readFileSync(path.join(process.cwd(), "src", "logs", "pope.json"), "utf-8"))
-        let entry: PopeEntry | undefined = pope_list.find((entry: PopeEntry) => entry.id === interaction.user.id)
+        let pope_entry: PopeEntry | undefined = pope_list.find((entry: PopeEntry) => entry.id === interaction.user.id)
 
-        if (!entry) {
-            entry = {
-                id: interaction.user.id,
-                username: interaction.user.username,
-                popes: 0,
-                popes_in_a_row: 0,
-                last_pope: ""
-            }
+        // Default pope entry assignment
+        if (!pope_entry) {
+            pope_entry = { ...default_pope_entry }
+            pope_entry.id = interaction.user.id
+            pope_entry.username = interaction.user.username
+            pope_entry.last_pope = new Date(interaction.createdAt).toISOString().split("T")[0]
 
-            pope_list.push(entry)
+            pope_list.push(pope_entry)
             fs.writeFileSync(path.join(process.cwd(), "src", "logs", "pope.json"), JSON.stringify(pope_list, null, 4), "utf-8")
         }
 
@@ -39,16 +38,16 @@ export const Kremufki: Command = {
             .setColor(Color.primary)
             .setTitle(`Raport kremufkowy dla ${interaction.user.displayName}`)
 
-        if (entry.popes > 0) {
+        if (pope_entry.popes > 0) {
             embed.setFields(
                 {
                     name: `${kremufka_emoji_string} Kremufki ${kremufka_emoji_string}`,
-                    value: `Zjadłeś/aś ${entry.popes} ${kremufka_emoji_string}`,
+                    value: `Zjadłeś/aś ${pope_entry.popes} ${kremufka_emoji_string}`,
                     inline: true
                 },
                 {
                     name: `:fire: Streak :fire:`,
-                    value: `Zjadłeś/aś ${entry.popes_in_a_row} ${kremufka_emoji_string} pod rząd :fire:`,
+                    value: `Zjadłeś/aś ${pope_entry.popes_in_a_row} ${kremufka_emoji_string} pod rząd :fire:`,
                     inline: true
                 }
             )
