@@ -24,6 +24,9 @@ import pope from "./events/pope"
 import jesus from "./events/jesus"
 import good_day from "./events/good_day"
 
+// Import jobs
+import "./utils/streak-reset"
+
 export const client: Client<boolean> = new Client({
     //intents: Object.values(GatewayIntentBits).filter((intent): intent is number => typeof intent === "number")
     intents: [
@@ -41,6 +44,7 @@ export const client: Client<boolean> = new Client({
     ]
 })
 
+// Run events
 clientReady(client)
 interactionCreate(client)
 pope(client)

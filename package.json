@@ -1,6 +1,6 @@
 {
   "name": "polish-pope-on-discord",
-  "version": "3.3.2",
+  "version": "3.4.1",
   "description": "Discord bot giving points for saying \"2137\" at 9.37pm!",
   "license": "MIT",
   "author": "LunarWanderer",
@@ -15,6 +15,7 @@
     "url": "https://github.com/Generacja-Innowacja/pope-discord-bot"
   },
   "dependencies": {
+    "@types/node-schedule": "^2.1.8",
     "discord.js": "^14.25.1",
     "dotenv": "^17.2.3",
     "expr-eval": "^2.0.2",

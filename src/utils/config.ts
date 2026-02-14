@@ -63,3 +63,8 @@ export const default_wrapped_entry: WrappedEntry = {
     barka: 0,
     one_min_late: 0
 }
+
+export function log(level: string, message: string) {
+    const timestamp = new Date().toISOString()
+    console.log(`[${timestamp}] [${level}]: ${message}`)
+}
