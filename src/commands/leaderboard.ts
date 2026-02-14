@@ -1,3 +1,4 @@
+// to be optimized
 import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js"
 import { Pagination } from "pagination.djs"
 import { Command, Color, Emoji, Emojis, PopeEntry } from "src/utils/config"
@@ -20,8 +21,11 @@ export const Leaderboard: Command = {
         if (!kremufka_emoji) return await error(interaction, "emoji", true)
         const kremufka_emoji_string: string = `<:${kremufka_emoji.name}:${kremufka_emoji.id}>`
 
+        // Load JSON and order it by popes
         const pope_list: PopeEntry[] = JSON.parse(fs.readFileSync(path.join(process.cwd(), "src", "logs", "pope.json"), "utf-8"))
         pope_list.sort((a, b) => b.popes - a.popes)
+
+        interaction.deferReply() // Defer the reply now to let any errors get sent before limiting the interaction to this reply
 
         const leaderboard = new Pagination(interaction, { limit: 1 })
             .setColor(Color.primary)
