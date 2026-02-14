@@ -1,4 +1,4 @@
-import { Client, Message, AttachmentBuilder, MessageFlags } from "discord.js"
+import { Client, Message, AttachmentBuilder } from "discord.js"
 import { Emoji, Emojis, PopeEntry, default_pope_entry, WrappedEntry, default_wrapped_entry } from "src/utils/config"
 import { error } from "src/utils/error_handler"
 import { Parser } from "expr-eval"
