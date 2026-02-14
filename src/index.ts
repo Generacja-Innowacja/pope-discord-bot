@@ -22,6 +22,7 @@ import clientReady from "./events/clientReady"
 import interactionCreate from "./events/interactionCreate"
 import pope from "./events/pope"
 import jesus from "./events/jesus"
+import good_day from "./events/good_day"
 
 export const client: Client<boolean> = new Client({
     intents: Object.values(GatewayIntentBits).filter((intent): intent is number => typeof intent === "number")
@@ -31,6 +32,7 @@ clientReady(client)
 interactionCreate(client)
 pope(client)
 jesus(client)
+good_day(client)
 
 // Login with the bot
 client.login(process.env.TOKEN)
