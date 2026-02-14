@@ -51,7 +51,7 @@ export default (client: Client): void => {
             const pope_list = JSON.parse(fs.readFileSync(path.join(process.cwd(), "src", "logs", "pope.json"), "utf-8"))
             const wrapped_list = JSON.parse(fs.readFileSync(path.join(process.cwd(), "src", "logs", "wrapped.json"), "utf-8"))
             let pope_entry: PopeEntry = pope_list.find((entry: PopeEntry) => entry.id === message.author.id)
-            let wrapped_entry: WrappedEntry = wrapped_list.find((entry: PopeEntry) => entry.id === message.author.id)
+            let wrapped_entry: WrappedEntry = wrapped_list.find((entry: WrappedEntry) => entry.id === message.author.id)
 
             // Default pope entry assignment
             if (!pope_entry) {
