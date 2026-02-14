@@ -8,13 +8,15 @@ import { Barka } from "./commands/barka"
 import { Kremufki } from "./commands/kremufki"
 import { Leaderboard } from "./commands/leaderboard"
 import { TimeLeftUntilNextPope } from "./commands/timeleftuntilnextpope"
+import { Wrapped } from "./commands/wrapped"
 
 export const Commands: Command[] = [
     Ping,
     Barka,
     Kremufki,
     Leaderboard,
-    TimeLeftUntilNextPope
+    TimeLeftUntilNextPope,
+    Wrapped
 ]
 
 // Import events
