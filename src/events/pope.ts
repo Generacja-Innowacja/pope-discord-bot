@@ -47,7 +47,7 @@ export default (client: Client): void => {
 
         // Check if the message contains an expression that results in 2137
         if (await checkForPope(message.content)) {
-            // Load JSONs
+            // Load JSONs and find entries
             const pope_list: PopeEntry[] = JSON.parse(fs.readFileSync(path.join(process.cwd(), "src", "logs", "pope.json"), "utf-8"))
             const wrapped_list: WrappedEntry[] = JSON.parse(fs.readFileSync(path.join(process.cwd(), "src", "logs", "wrapped.json"), "utf-8"))
             let pope_entry: PopeEntry | undefined = pope_list.find((entry: PopeEntry) => entry.id === message.author.id)
@@ -73,7 +73,7 @@ export default (client: Client): void => {
             }
 
             // In case someone has changed their username, update it
-            pope_entry.username = message.author.username,
+            pope_entry.username = message.author.username
             wrapped_entry.username = message.author.username
 
             // Ensure the message was sent at the correct time
