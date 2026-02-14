@@ -25,7 +25,20 @@ import jesus from "./events/jesus"
 import good_day from "./events/good_day"
 
 export const client: Client<boolean> = new Client({
-    intents: Object.values(GatewayIntentBits).filter((intent): intent is number => typeof intent === "number")
+    //intents: Object.values(GatewayIntentBits).filter((intent): intent is number => typeof intent === "number")
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildIntegrations,
+        GatewayIntentBits.GuildPresences,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.GuildMessageTyping,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.DirectMessages,
+        GatewayIntentBits.DirectMessageReactions,
+        GatewayIntentBits.DirectMessageTyping,
+        GatewayIntentBits.MessageContent
+    ]
 })
 
 clientReady(client)
