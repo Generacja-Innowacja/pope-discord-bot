@@ -3,6 +3,7 @@ import { Pagination } from "pagination.djs"
 import { Command, Color, Emoji, Emojis, PopeEntry } from "src/utils/config"
 import { error } from "src/utils/error_handler"
 import fs from "fs"
+import path from "path"
 
 export const Leaderboard: Command = {
     data: new SlashCommandBuilder()
@@ -15,13 +16,11 @@ export const Leaderboard: Command = {
             !interaction.channel.isTextBased() ||
             interaction.channel.id != process.env.CHANNEL_ID) return await error(interaction, "channel", false)
 
-        interaction.deferReply()
-
-        const kremufka_emoji: Emoji | undefined = Emojis.find(emoji => emoji.name === "cards")
+        const kremufka_emoji: Emoji | undefined = Emojis.find(emoji => emoji.name === "kremuuuuufkuuuj_z_tyyyyyym_")
         if (!kremufka_emoji) return await error(interaction, "emoji", true)
         const kremufka_emoji_string: string = `<:${kremufka_emoji.name}:${kremufka_emoji.id}>`
 
-        const pope_list: PopeEntry[] = JSON.parse(fs.readFileSync("src/logs/pope.json", "utf-8"))
+        const pope_list: PopeEntry[] = JSON.parse(fs.readFileSync(path.join(process.cwd(), "src", "logs", "pope.json"), "utf-8"))
         pope_list.sort((a, b) => b.popes - a.popes)
 
         const leaderboard = new Pagination(interaction, { limit: 1 })

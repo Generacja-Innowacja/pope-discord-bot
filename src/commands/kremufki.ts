@@ -2,6 +2,7 @@ import { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder } from "
 import { Command, Color, Emoji, Emojis, PopeEntry } from "src/utils/config"
 import { error } from "src/utils/error_handler"
 import fs from "fs"
+import path from "path"
 
 export const Kremufki: Command = {
     data: new SlashCommandBuilder()
@@ -18,7 +19,7 @@ export const Kremufki: Command = {
         if (!kremufka_emoji) return await error(interaction, "emoji", true)
         const kremufka_emoji_string: string = `<:${kremufka_emoji.name}:${kremufka_emoji.id}>`
 
-        const pope_list: PopeEntry[] = JSON.parse(fs.readFileSync("src/logs/pope.json", "utf-8"))
+        const pope_list: PopeEntry[] = JSON.parse(fs.readFileSync(path.join(process.cwd(), "src", "logs", "pope.json"), "utf-8"))
         let entry: PopeEntry | undefined = pope_list.find((entry: PopeEntry) => entry.id === interaction.user.id)
 
         if (!entry) {
@@ -31,7 +32,7 @@ export const Kremufki: Command = {
             }
 
             pope_list.push(entry)
-            fs.writeFileSync("src/logs/popes.json", JSON.stringify(pope_list, null, 4), "utf-8")
+            fs.writeFileSync(path.join(process.cwd(), "src", "logs", "pope.json"), JSON.stringify(pope_list, null, 4), "utf-8")
         }
 
         const embed: EmbedBuilder = new EmbedBuilder()

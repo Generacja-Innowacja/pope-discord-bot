@@ -3,6 +3,7 @@ import { Pagination } from "pagination.djs"
 import { Command, Color, WrappedEntry } from "src/utils/config"
 import { error } from "src/utils/error_handler"
 import fs from "fs"
+import path from "path"
 import "dotenv/config"
 
 export const Barka: Command = {
@@ -16,7 +17,7 @@ export const Barka: Command = {
             !interaction.channel.isTextBased() ||
             interaction.channel.id != process.env.CHANNEL_ID) return error(interaction, "channel", false)
 
-        const wrapped: WrappedEntry[] = JSON.parse(fs.readFileSync("src/logs/wrapped.json", "utf-8"))
+        const wrapped: WrappedEntry[] = JSON.parse(fs.readFileSync(path.join(process.cwd(), "src", "logs", "wrapped.json"), "utf-8"))
         let wrapped_entry: WrappedEntry | undefined = wrapped.find((entry: WrappedEntry) => entry.id === interaction.user.id)
 
         if (!wrapped_entry) {
@@ -96,6 +97,6 @@ export const Barka: Command = {
             .render()
 
         wrapped_entry.barka++
-        fs.writeFileSync("src/logs/wrapped.json", JSON.stringify(wrapped, null, 4), "utf-8")
+        fs.writeFileSync(path.join(process.cwd(), "src", "logs", "wrapped.json"), JSON.stringify(wrapped, null, 4), "utf-8")
     }
 }
