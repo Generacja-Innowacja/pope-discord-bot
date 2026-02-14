@@ -4,7 +4,6 @@ import { Command, Color, WrappedEntry } from "src/utils/config"
 import { error } from "src/utils/error_handler"
 import fs from "fs"
 import path from "path"
-import "dotenv/config"
 
 export const Barka: Command = {
     data: new SlashCommandBuilder()

@@ -1,6 +1,5 @@
 import { ChatInputCommandInteraction, Message, User, EmbedBuilder, MessageFlags, email } from "discord.js"
 import { Color } from "./config"
-import "dotenv/config"
 
 async function sendReport(interaction: ChatInputCommandInteraction | Message, embed: EmbedBuilder): Promise<void> {
     let target: User = interaction instanceof Message ? interaction.author : interaction.user
