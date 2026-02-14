@@ -6,13 +6,18 @@ import fs from "fs"
 import path from "path"
 
 async function checkForPope(message_content: string): Promise<boolean> {
+    // Initiate the expression parser
     const parser = new Parser()
 
+    // In case the message isn't parsable (for example: "TestMessage123")
     try {
+        // Limit the message to 100 characters to avoid overloading the server
         if (message_content.length > 100) return false;
 
+        // Try to evaluate the expression
         const result = parser.evaluate(message_content)
 
+        // Check if the result is an appropriate number
         if (isNaN(result) || !Number.isFinite(result)) return false
 
         return result === 2137
@@ -40,13 +45,15 @@ export default (client: Client): void => {
         yesterday.setDate(yesterday.getDate() - 1)
         yesterday = yesterday.toISOString().split("T")[0]
 
+        // Check if the message contains an expression that results in 2137
         if (await checkForPope(message.content)) {
+            // Load JSONs
             const pope_list = JSON.parse(fs.readFileSync(path.join(process.cwd(), "src", "logs", "pope.json"), "utf-8"))
             const wrapped_list = JSON.parse(fs.readFileSync(path.join(process.cwd(), "src", "logs", "wrapped.json"), "utf-8"))
-
             let pope_entry: PopeEntry = pope_list.find((entry: PopeEntry) => entry.id === message.author.id)
             let wrapped_entry: WrappedEntry = wrapped_list.find((entry: PopeEntry) => entry.id === message.author.id)
 
+            // Default pope entry assignment
             if (!pope_entry) {
                 pope_entry = { ...default_pope_entry }
                 pope_entry.id = message.author.id
@@ -56,6 +63,7 @@ export default (client: Client): void => {
                 pope_list.push(pope_entry)
             }
 
+            // Default wrapped entry assignment
             if (!wrapped_entry) {
                 wrapped_entry = { ...default_wrapped_entry }
                 wrapped_entry.id = message.author.id
@@ -68,7 +76,9 @@ export default (client: Client): void => {
             pope_entry.username = message.author.username,
             wrapped_entry.username = message.author.username
 
+            // Ensure the message was sent at the correct time
             if (hours === 21 && minutes === 37) {
+                // Get the images that will be sent along the message
                 const kremufki: string[] = []
                 const imagePaths: string = path.join(process.cwd(), "src", "images", "kremufki")
                 fs.readdirSync(imagePaths).filter((file: string) => file.endsWith(".png")).map((image: string) => kremufki.push(path.join(imagePaths, image)))
@@ -89,6 +99,7 @@ export default (client: Client): void => {
                     if (!kremufka_emoji) return await error(message, "emoji", true)
                     const kremufka_emoji_string: string = `<:${kremufka_emoji.name}:${kremufka_emoji.id}>`
 
+                    // If the streak is divisible by 100 (100, 300, 500, 1000), give user the golden kremufka, else just give a normal one
                     if (pope_entry.popes_in_a_row > 0 && pope_entry.popes_in_a_row % 100 === 0) {
                         reply_message += `specjalna okazja!!! W nagrodę za twój pokaźny wyczyn, zostajesz nagrodzony złotą kremówką!`
                         let golden_kremufka_path = path.join(process.cwd(), "src", "images", "golden_kremufka.png")
@@ -106,6 +117,7 @@ export default (client: Client): void => {
                     message.reply(`${message.author} nieco za szybko piszesz tą godzinę, może poczekaj do jutra, co?`)
                 }
 
+                // Save changes to both JSON files
                 fs.writeFileSync(path.join(process.cwd(), "src", "logs", "pope.json"), JSON.stringify(pope_list, null, 4))
                 fs.writeFileSync(path.join(process.cwd(), "src", "logs", "wrapped.json"), JSON.stringify(wrapped_list, null, 4))
             } else {
@@ -140,6 +152,7 @@ export default (client: Client): void => {
 
                     message.reply(late_message)
 
+                    // Special reply for when someone is a few seconds late
                     if (hours === 21 && minutes === 38) {
                         wrapped_entry.one_min_late++
                         fs.writeFileSync(path.join(process.cwd(), "src", "logs", "wrapped.json"), JSON.stringify(wrapped_list, null, 4))
@@ -149,6 +162,7 @@ export default (client: Client): void => {
                     message.reply("Już dzisiaj otrzymałeś/aś swoją kremówkę, zostaw trochę dla innych!")
                 }
             }
+        // Messages at other times
         } else if (message.content.includes("1237") && hours === 12 && minutes === 37) {
             let late_message = "Chyba pomyliłeś/aś godziny... Jeśli coś brałeś/aś, podziel się"
             late_message = late_message.split('').reverse().join('')
