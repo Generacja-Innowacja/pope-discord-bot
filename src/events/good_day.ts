@@ -1,5 +1,5 @@
 import { Client, Message } from "discord.js"
-import { WrappedEntry, default_wrapped_entry } from "src/utils/config"
+import { WrappedEntry, default_wrapped_entry, log } from "src/utils/config"
 import { error } from "src/utils/error_handler"
 import fs from "fs"
 import path from "path"
@@ -45,25 +45,29 @@ export default (client: Client): void => {
                 "czy może uważasz, że dzisiaj należy być dobrym?"
             ]
 
-            let line = 0
-            let response = lines[line]
-            let reply_message = await message.reply(response)
-    
-            const interval: NodeJS.Timeout = setInterval(() => {
-                line++
-                response += `\n${lines[line]}`
-                reply_message.edit(response)
-    
-                if (line > 4) {
-                    flags.good_day_is_typing = false
-                    fs.writeFileSync(path.join(process.cwd(), "src", "logs", "flags.json"), JSON.stringify(flags, null, 4))
-    
-                    wrapped_entry.gandalf++
-                    fs.writeFileSync(path.join(process.cwd(), "src", "logs", "wrapped.json"), JSON.stringify(wrapped_list, null, 4))
-    
-                    clearInterval(interval)
-                }
-            }, 2000)
+            try {
+                let line = 0
+                let response = lines[line]
+                let reply_message = await message.reply(response)
+        
+                const interval: NodeJS.Timeout = setInterval(() => {
+                    line++
+                    response += `\n${lines[line]}`
+                    reply_message.edit(response)
+        
+                    if (line > 4) {
+                        flags.good_day_is_typing = false
+                        fs.writeFileSync(path.join(process.cwd(), "src", "logs", "flags.json"), JSON.stringify(flags, null, 4))
+        
+                        wrapped_entry.gandalf++
+                        fs.writeFileSync(path.join(process.cwd(), "src", "logs", "wrapped.json"), JSON.stringify(wrapped_list, null, 4))
+        
+                        clearInterval(interval)
+                    }
+                }, 2000)
+            } catch(error: any) {
+                log("ERROR", "No send messages permission")
+            }
         }
     })
 }

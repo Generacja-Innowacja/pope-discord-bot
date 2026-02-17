@@ -1,5 +1,5 @@
 import { Client, Message } from "discord.js"
-import { WrappedEntry, default_wrapped_entry } from "src/utils/config"
+import { WrappedEntry, default_wrapped_entry, log } from "src/utils/config"
 import { error } from "src/utils/error_handler"
 import fs from "fs"
 import path from "path"
@@ -50,7 +50,12 @@ export default (client: Client): void => {
             fs.writeFileSync(path.join(process.cwd(), "src", "logs", "wrapped.json"), JSON.stringify(wrapped_list, null, 4))
 
             const response = responses[Math.floor(Math.random() * responses.length)]
-            message.reply(response)
+            
+            try {
+                await message.reply(response)
+            } catch(error: any) {
+                log("ERROR", "No send messages permission")
+            }
         }
 
         if (message_content.includes("szczęść boże") || message_content.includes("szczesc boze")) {
@@ -61,9 +66,20 @@ export default (client: Client): void => {
             ]
 
             const response = responses[Math.floor(Math.random() * responses.length)]
-            message.reply(response)
+            
+            try {
+                await message.reply(response)
+            } catch(error: any) {
+                log("ERROR", "No send messages permission")
+            }
         }
 
-        if (message_content.includes("niech będzie pochwalony jezus chrystus") || message_content.includes("niech bedzie pochwalony jezus chrystus")) message.reply("Na wieki wieków, amen!")
+        if (message_content.includes("niech będzie pochwalony jezus chrystus") || message_content.includes("niech bedzie pochwalony jezus chrystus")) {
+            try {
+                await message.reply("Na wieki wieków, amen!")
+            } catch(error: any) {
+                log("ERROR", "No send messages permission")
+            }
+        }
     })
 }
