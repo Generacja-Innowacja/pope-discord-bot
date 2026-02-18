@@ -41,6 +41,11 @@ export const new_leaderboard: Command = {
         // Load JSON
         let pope_list: PopeEntry[] = JSON.parse(fs.readFileSync(path.join(process.cwd(), "src", "logs", "pope.json"), "utf-8"))
 
+        // Sort pope_list by the id and the streak first as a double tie breaker
+        pope_list
+            .sort((a, b) => Number(b.id) - Number(a.id))
+            .sort((a, b) => b.popes_in_a_row - a.popes_in_a_row)
+
         const leaderboard = new Pagination(interaction, { limit: 1 })
             .setColor(Color.primary)
 
