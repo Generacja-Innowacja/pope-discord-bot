@@ -7,6 +7,7 @@ import { Ping } from "./commands/ping"
 import { Barka } from "./commands/barka"
 import { Kremufki } from "./commands/kremufki"
 import { Leaderboard } from "./commands/leaderboard"
+import { new_leaderboard } from "./commands/new_leaderboard"
 import { TimeLeftUntilNextPope } from "./commands/timeleftuntilnextpope"
 import { Wrapped } from "./commands/wrapped"
 
@@ -15,6 +16,7 @@ export const Commands: Command[] = [
     Barka,
     Kremufki,
     Leaderboard,
+    new_leaderboard,
     TimeLeftUntilNextPope,
     Wrapped
 ]

@@ -30,6 +30,10 @@ export interface PopeEntry {
     id: string,
     username: string,
     popes: number,
+    popes_14d: number,
+    popes_1m: number,
+    popes_3m: number,
+    popes_year: number,
     popes_in_a_row: number,
     last_pope: string
 }
@@ -38,6 +42,10 @@ export const default_pope_entry: PopeEntry = {
     id: "",
     username: "",
     popes: 0,
+    popes_14d: 0,
+    popes_1m: 0,
+    popes_3m: 0,
+    popes_year: 0,
     popes_in_a_row: 0,
     last_pope: ""
 }

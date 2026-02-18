@@ -85,6 +85,10 @@ export default (client: Client): void => {
 
                 if (pope_entry.last_pope !== now || pope_entry.popes === 0) {
                     pope_entry.popes++
+                    pope_entry.popes_14d++
+                    pope_entry.popes_1m++
+                    pope_entry.popes_3m++
+                    pope_entry.popes_year++
                     pope_entry.last_pope === yesterday ? pope_entry.popes_in_a_row++ : pope_entry.popes_in_a_row = 1
                     pope_entry.last_pope = now
 
