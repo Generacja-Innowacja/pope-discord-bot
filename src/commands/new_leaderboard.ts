@@ -108,7 +108,7 @@ export const new_leaderboard: Command = {
                     case "3m":
                         score = entry.popes_3m
                         break
-                    case "year":
+                    case "1y":
                         score = entry.popes_year
                         break
                 }
@@ -143,7 +143,7 @@ export const new_leaderboard: Command = {
                 case "3m":
                     score = entry.popes_3m
                     break
-                case "year":
+                case "1y":
                     score = entry.popes_year
                     break
             }
