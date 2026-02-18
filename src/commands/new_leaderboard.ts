@@ -39,7 +39,7 @@ export const new_leaderboard: Command = {
         await interaction.deferReply() // Defer the reply now to let any errors get sent before limiting the interaction to this reply
 
         // Load JSON
-        const pope_list: PopeEntry[] = JSON.parse(fs.readFileSync(path.join(process.cwd(), "src", "logs", "pope.json"), "utf-8"))
+        let pope_list: PopeEntry[] = JSON.parse(fs.readFileSync(path.join(process.cwd(), "src", "logs", "pope.json"), "utf-8"))
 
         const leaderboard = new Pagination(interaction, { limit: 1 })
             .setColor(Color.primary)
@@ -47,33 +47,33 @@ export const new_leaderboard: Command = {
         switch (range) {
             case "14d":
                 leaderboard.setTitle("Tablica wyników z 14 dni")
-                pope_list
-                    .sort((a, b) => b.popes_14d - a.popes_14d)
+                pope_list = pope_list
                     .filter((entry: PopeEntry) => entry.popes_14d !== 0)
+                    .sort((a, b) => b.popes_14d - a.popes_14d)
                 break
             case "1m":
                 leaderboard.setTitle("Tablica wyników tego miesiąca")
-                pope_list
-                    .sort((a, b) => b.popes_1m - a.popes_1m)
+                pope_list = pope_list
                     .filter((entry: PopeEntry) => entry.popes_1m !== 0)
+                    .sort((a, b) => b.popes_1m - a.popes_1m)
                 break
             case "3m":
                 leaderboard.setTitle("Tablica wyników z 3 miesięcy")
-                pope_list
-                    .sort((a, b) => b.popes_3m - a.popes_3m)
+                pope_list = pope_list
                     .filter((entry: PopeEntry) => entry.popes_3m !== 0)
+                    .sort((a, b) => b.popes_3m - a.popes_3m)
                 break
             case "1y":
                 leaderboard.setTitle("Tablica wyników z tego roku")
-                pope_list
-                    .sort((a, b) => b.popes_year - a.popes_year)
+                pope_list = pope_list
                     .filter((entry: PopeEntry) => entry.popes_year !== 0)
+                    .sort((a, b) => b.popes_year - a.popes_year)
                 break
             default:
                 leaderboard.setTitle("Tablica wyników")
-                pope_list
-                    .sort((a, b) => b.popes - a.popes)
+                pope_list = pope_list
                     .filter((entry: PopeEntry) => entry.popes !== 0)
+                    .sort((a, b) => b.popes - a.popes)
         }
 
         const pages: number = Math.floor(pope_list.length / 10) // The total number of pages
