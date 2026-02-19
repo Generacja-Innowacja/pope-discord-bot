@@ -31,6 +31,7 @@ import good_day from "./events/good_day"
 // Import jobs
 import "./utils/streak-reset"
 import "./utils/wrapped-reset"
+import "./utils/leaderboard-reset"
 
 export const client: Client<boolean> = new Client({
     //intents: Object.values(GatewayIntentBits).filter((intent): intent is number => typeof intent === "number")
