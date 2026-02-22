@@ -81,19 +81,55 @@ export const new_leaderboard: Command = {
                     .sort((a, b) => b.popes - a.popes)
         }
 
-        const pages: number = Math.floor(pope_list.length / 10) // The total number of pages
-        const last_page: number = pope_list.length - pages * 10 // How many entries will be on the last page
-        let name: string = ""
+        if (pope_list.length > 0) {
+            const pages: number = Math.floor(pope_list.length / 10) // The total number of pages
+            const last_page: number = pope_list.length - pages * 10 // How many entries will be on the last page
+            let name: string = ""
 
-        // member = person is in the server
-        // user = person has left the server
-        for (let p: number = 0; p < pages; p++) {
-            let record: string = ""
+            // member = person is in the server
+            // user = person has left the server
+            for (let p: number = 0; p < pages; p++) {
+                let record: string = ""
 
-            // every full page has 10 members
-            for (let i: number = 0; i < 10; i++) {
+                // every full page has 10 members
+                for (let i: number = 0; i < 10; i++) {
+                    let score: number = 0
+                    const entry: PopeEntry = pope_list[i + p * 10]
+
+                    try {
+                        const member = await interaction.guild.members.fetch(entry.id)
+                        name = member.displayName.replaceAll("*", "\\*").replaceAll("_", "\\_")
+                    } catch(error) {
+                        const user = await interaction.client.users.fetch(entry.id)
+                        name = user.username.replaceAll("*", "\\*").replaceAll("_", "\\_")
+                    }
+
+                    switch (range) {
+                        case "14d":
+                            score = entry.popes_14d
+                            break
+                        case "1m":
+                            score = entry.popes_1m
+                            break
+                        case "3m":
+                            score = entry.popes_3m
+                            break
+                        case "1y":
+                            score = entry.popes_year
+                            break
+                    }
+
+                    record += `**${(i + 1) + p * 10}.** *${name}* - ${score} ${kremufka_emoji_string} | ${entry.popes_in_a_row} :fire:\n`
+                }
+
+                leaderboard.addDescriptions([record])
+            }
+
+            let record = ""
+
+            for(let i: number = 0; i < last_page; i++) {
                 let score: number = 0
-                const entry: PopeEntry = pope_list[i + p * 10]
+                const entry: PopeEntry = pope_list[i + pages * 10]
 
                 try {
                     const member = await interaction.guild.members.fetch(entry.id)
@@ -118,46 +154,14 @@ export const new_leaderboard: Command = {
                         break
                 }
 
-                record += `**${(i + 1) + p * 10}.** *${name}* - ${score} ${kremufka_emoji_string} | ${entry.popes_in_a_row} :fire:\n`
+                record += `**${(i + 1) + pages * 10}.** *${name}* - ${score} ${kremufka_emoji_string} | ${entry.popes_in_a_row} :fire:\n`
             }
 
             leaderboard.addDescriptions([record])
+
+            leaderboard.render()
+        } else {
+            interaction.reply({ content: "Jeszcze nikt nie dostał kremówki, poczekaj do 21:37"})
         }
-
-        let record = ""
-
-        for(let i: number = 0; i < last_page; i++) {
-            let score: number = 0
-            const entry: PopeEntry = pope_list[i + pages * 10]
-
-            try {
-                const member = await interaction.guild.members.fetch(entry.id)
-                name = member.displayName.replaceAll("*", "\\*").replaceAll("_", "\\_")
-            } catch(error) {
-                const user = await interaction.client.users.fetch(entry.id)
-                name = user.username.replaceAll("*", "\\*").replaceAll("_", "\\_")
-            }
-
-            switch (range) {
-                case "14d":
-                    score = entry.popes_14d
-                    break
-                case "1m":
-                    score = entry.popes_1m
-                    break
-                case "3m":
-                    score = entry.popes_3m
-                    break
-                case "1y":
-                    score = entry.popes_year
-                    break
-            }
-
-            record += `**${(i + 1) + pages * 10}.** *${name}* - ${score} ${kremufka_emoji_string} | ${entry.popes_in_a_row} :fire:\n`
-        }
-
-        leaderboard.addDescriptions([record])
-
-        leaderboard.render()
     }
 }
