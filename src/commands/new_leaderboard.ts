@@ -161,7 +161,7 @@ export const new_leaderboard: Command = {
 
             leaderboard.render()
         } else {
-            interaction.reply({ content: "Jeszcze nikt nie dostał kremówki, poczekaj do 21:37"})
+            interaction.editReply("Jeszcze nikt nie dostał kremówki, poczekaj do 21:37")
         }
     }
 }
