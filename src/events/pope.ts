@@ -96,7 +96,12 @@ export default (client: Client): void => {
                     if (pope_entry.popes_in_a_row > wrapped_entry.most_popes_in_a_row) wrapped_entry.most_popes_in_a_row = pope_entry.popes_in_a_row
 
                     let reply_message = `${message.author} to twoja ${pope_entry.popes} papieżowa, `
-                    if (pope_entry.popes_in_a_row > 1) reply_message += `już ${pope_entry.popes_in_a_row} z rzędu, `
+                    if (pope_entry.popes_in_a_row > 1) {
+                        reply_message += `już ${pope_entry.popes_in_a_row} z rzędu, `
+                        if (pope_entry.popes_in_a_row > 10 && message.author.id === "757908533692989481") { // paweł
+                            reply_message += "wowww, ale ty jesteś zdeterminowany! "
+                        }
+                    }
 
                     let attachment: AttachmentBuilder
                     const kremufka_emoji: Emoji | undefined = Emojis.find(emoji => emoji.name === "kremuuuuufkuuuj_z_tyyyyyym_")
