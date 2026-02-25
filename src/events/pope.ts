@@ -7,7 +7,7 @@ import path from "path"
 
 async function checkForPope(message_content: string): Promise<boolean> {
     // Initiate the expression parser
-    const parser = new Parser()
+    const parser = new Parser({operators: {assignment: false, 'in': false}})
 
     // In case the message isn't parsable (for example: "TestMessage123")
     try {
