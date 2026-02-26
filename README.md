@@ -3,7 +3,7 @@
 The Pope bot is a discord app aiming to increase the overall activity of the server, as well as add a way for all members to compete with each other.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-3.7.3-green.svg)]()
+[![Version](https://img.shields.io/badge/version-3.8.1-green.svg)]()
 
 ## Description
 
