@@ -95,33 +95,51 @@ export default (client: Client): void => {
                     wrapped_entry.popes++
                     if (pope_entry.popes_in_a_row > wrapped_entry.most_popes_in_a_row) wrapped_entry.most_popes_in_a_row = pope_entry.popes_in_a_row
 
-                    let reply_message = `${message.author} to twoja ${pope_entry.popes} papieżowa, `
-                    if (pope_entry.popes_in_a_row > 1) {
-                        reply_message += `już ${pope_entry.popes_in_a_row} z rzędu, `
-                        if (pope_entry.popes_in_a_row > 10 && message.author.id === "757908533692989481") { // paweł
-                            reply_message += "wowww, ale ty jesteś zdeterminowany! "
-                        }
-                    }
-
                     let attachment: AttachmentBuilder
                     const kremufka_emoji: Emoji | undefined = Emojis.find(emoji => emoji.name === "kremuuuuufkuuuj_z_tyyyyyym_")
                     if (!kremufka_emoji) return await error(message, "emoji", true)
                     const kremufka_emoji_string: string = `<:${kremufka_emoji.name}:${kremufka_emoji.id}>`
 
-                    // If the streak is divisible by 100 (100, 300, 500, 1000), give user the golden kremufka, else just give a normal one
-                    if (pope_entry.popes_in_a_row > 0 && pope_entry.popes_in_a_row % 100 === 0) {
-                        reply_message += `specjalna okazja!!! W nagrodę za twój pokaźny wyczyn, zostajesz nagrodzony złotą kremówką!`
-                        let golden_kremufka_path = path.join(process.cwd(), "src", "images", "golden_kremufka.png")
-                        attachment = new AttachmentBuilder(golden_kremufka_path, { name: "golden_kremufka.png" })
-                    } else {
-                        reply_message += `trzymaj kremówkę!`
-                        let kremufka_path = kremufki[Math.floor(Math.random() * kremufki.length)]
-                        attachment = new AttachmentBuilder(kremufka_path, { name: "kremufka.png" })
-                    }
-                    reply_message += kremufka_emoji_string
+                    if (message.author.id !== "757908533692989481" || Math.random() > 0.1) {
+                        let reply_message: string = `${message.author} to twoja ${pope_entry.popes} papieżowa, `
+                        if (pope_entry.popes_in_a_row > 1) reply_message += `już ${pope_entry.popes_in_a_row} z rzędu, `
 
-                    message.reply({ content: reply_message, files: [ attachment ] })
-                    message.react(kremufka_emoji_string)
+                        // If the streak is divisible by 100 (100, 300, 500, 1000), give user the golden kremufka, else just give a normal one
+                        if (pope_entry.popes_in_a_row > 0 && pope_entry.popes_in_a_row % 100 === 0) {
+                            reply_message += `specjalna okazja!!! W nagrodę za twój pokaźny wyczyn, zostajesz nagrodzony złotą kremówką!`
+                            let golden_kremufka_path: string = path.join(process.cwd(), "src", "images", "golden_kremufka.png")
+                            attachment = new AttachmentBuilder(golden_kremufka_path, { name: "golden_kremufka.png" })
+                        } else {
+                            reply_message += `trzymaj kremówkę!`
+                            let kremufka_path = kremufki[Math.floor(Math.random() * kremufki.length)]
+                            attachment = new AttachmentBuilder(kremufka_path, { name: "kremufka.png" })
+                        }
+                        reply_message += kremufka_emoji_string
+
+                        if (pope_entry.popes === 69) reply_message += "\n\n-# hehe.."
+
+                        message.reply({ content: reply_message, files: [ attachment ] })
+                        message.react(kremufka_emoji_string)
+                    } else {
+                        // paweł
+                        let reply_message: string = "Cóż mogę powiedzieć?\nJesteś *niesamowity*.\n*Niewiarygodny*.\n*Absolutnie fenomenalny*.\n"
+                        reply_message += `# ${pope_entry.popes} ${kremufka_emoji_string} - ŚWIETNY WYNIK!!!`
+
+                        if (pope_entry.popes_in_a_row > 1) reply_message += `\nTo już twoja ${pope_entry.popes_in_a_row} pod rząd! Nice!`
+
+                        if (pope_entry.popes_in_a_row > 0 && pope_entry.popes_in_a_row % 100 === 0) {
+                            reply_message += `\nSpecjalny dzień!!! W nagrodę za twój pokaźny wyczyn, zostajesz nagrodzony złotą kremówką!`
+                            let golden_kremufka_path: string = path.join(process.cwd(), "src", "images", "golden_kremufka.png")
+                            attachment = new AttachmentBuilder(golden_kremufka_path, { name: "golden_kremufka.png" })
+                        } else {
+                            reply_message += `trzymaj kremówkę!`
+                            let kremufka_path: string = kremufki[Math.floor(Math.random() * kremufki.length)]
+                            attachment = new AttachmentBuilder(kremufka_path, { name: "kremufka.png" })
+                        }
+
+                        message.reply({ content: reply_message, files: [ attachment ] })
+                        message.react(kremufka_emoji_string)
+                    }
                 } else {
                     message.reply(`${message.author} nieco za szybko piszesz tą godzinę, może poczekaj do jutra, co?`)
                 }
