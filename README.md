@@ -16,17 +16,21 @@ It makes the atmosphere more competitive, but also more friendly at the same tim
 ### General Questions
 
 **Q: Can I base my bot on this app?**
+
 A: Yes, the MIT license allows both private and commercial use.
 
 **Q: How does the bot sort the leaderboard?**
+
 A: The leaderboard is sorted in three ways - first the number of cream cakes, then the stream of cream cakes, and finally, the user id as a tie breaker.
 
 ### Technical Questions
 
 **Q: How do I contribute?**
+
 A: Feel free to contact me on <a href="https://discordapp.com/users/489418032368713728" target="_blank">discord</a> and suggest a feature, or create a pull request!
 
 **Q: How do I report a bug?**
+
 A: Please create an issue on GitHub with a detailed description, reproduction steps and optionally a screenshot.
 
 ## License
