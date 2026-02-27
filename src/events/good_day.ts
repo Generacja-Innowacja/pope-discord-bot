@@ -11,7 +11,9 @@ export default (client: Client): void => {
         if (!message.guild ||
             !message.channel ||
             !message.channel.isTextBased() ||
-            !message.channel.isSendable()) return // check for channel type
+            !message.channel.isSendable() ||
+			message.channel.id !== process.env.CHANNEL_ID! ||
+			message.channel.id !== process.env.OFFTOP_ID!) return // check for channel
 
         const flags = JSON.parse(fs.readFileSync(path.join(process.cwd(), "src", "logs", "flags.json"), "utf-8"))
         const message_content = message.content.toLowerCase()
@@ -71,3 +73,4 @@ export default (client: Client): void => {
         }
     })
 }
+
