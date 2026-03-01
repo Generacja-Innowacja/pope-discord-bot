@@ -1,13 +1,13 @@
-import { Client, REST, Routes } from "discord.js"
+import { Client, REST, Routes, User } from "discord.js"
 import { Commands } from "./../index"
 
 export default (client: Client): void => {
     client.on("clientReady", async () => {
         if (!client.user || !client.application) return
 
-        const app = client.user
+        const app: User = client.user
         const restart: boolean = false
-        const rest = new REST().setToken(process.env.TOKEN!)
+        const rest: REST = new REST().setToken(process.env.TOKEN!)
 
         if (restart) {
             // Remove global commands
