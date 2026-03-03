@@ -132,7 +132,7 @@ export default (client: Client): void => {
                             let golden_kremufka_path: string = path.join(process.cwd(), "src", "images", "golden_kremufka.png")
                             attachment = new AttachmentBuilder(golden_kremufka_path, { name: "golden_kremufka.png" })
                         } else {
-                            reply_message += `trzymaj kremówkę!`
+                            reply_message += `\ntrzymaj kremówkę!`
                             let kremufka_path: string = kremufki[Math.floor(Math.random() * kremufki.length)]
                             attachment = new AttachmentBuilder(kremufka_path, { name: "kremufka.png" })
                         }
