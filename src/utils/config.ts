@@ -72,6 +72,23 @@ export const default_wrapped_entry: WrappedEntry = {
     one_min_late: 0
 }
 
+export interface AchievementInfo {
+    id: number,
+    name: string,
+    description: string
+}
+
+export interface Achievement {
+    id: number,
+    date: string
+}
+
+export interface AchievementEntry {
+    id: number,
+    username: string,
+    achievements: Achievement[]
+}
+
 export function log(level: string, message: string) {
     const timestamp = new Date().toISOString()
     console.log(`[${timestamp}] [${level}]: ${message}`)

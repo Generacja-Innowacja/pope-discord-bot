@@ -1,0 +1,57 @@
+[
+    {
+        "id": 1,
+        "name": "Dzień Święty",
+        "description": "Uświęć Dzień Święty razem z GI"
+    },
+    {
+        "id": 2,
+        "name": "Kolekcjoner kremówek",
+        "description": "Osiągnij wszystkie osiągnięcia"
+    },
+    {
+        "id": 3,
+        "name": "Wielkanocny zajączek",
+        "description": "Znajdź wszystkie sekrety"
+    },
+    {
+        "id": 4,
+        "name": "Gold digger",
+        "description": "Znajdź złotą kremówkę"
+    },
+    {
+        "id": 5,
+        "name": "Witaj w sekcie",
+        "description": "Otrzymaj pierwszą kremówkę"
+    },
+    {
+        "id": 6,
+        "name": "Pilny uczeń",
+        "description": "Otrzymaj 10 kremówek pod rząd"
+    },
+    {
+        "id": 7,
+        "name": "Ministrant",
+        "description": "Zgromadź 25 kremówek"
+    },
+    {
+        "id": 8,
+        "name": "Lektor",
+        "description": "Zgromadź 50 kremówek"
+    },
+    {
+        "id": 9,
+        "name": "Ksiądz",
+        "description": "Zgromadź 100 kremówek"
+    },
+    {
+        "id": 10,
+        "name": "Biskup",
+        "description": "Zgromadź 250 kremówek"
+    },
+    {
+        "id": 11,
+        "name": "Błogosławiony",
+        "description": "Zgromadź 500 kremówek"
+    }
+]
