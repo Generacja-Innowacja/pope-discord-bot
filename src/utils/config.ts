@@ -84,7 +84,7 @@ export interface Achievement {
 }
 
 export interface AchievementEntry {
-    id: number,
+    id: string,
     username: string,
     achievements: Achievement[]
 }
