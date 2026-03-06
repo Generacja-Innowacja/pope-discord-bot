@@ -72,6 +72,20 @@ export const default_wrapped_entry: WrappedEntry = {
     one_min_late: 0
 }
 
+export enum AchievementId {
+    dzien_swiety = 1,
+    kolekcjoner_kremowek,
+    wielkanocny_zajaczek,
+    gold_digger,
+    witaj_w_sekcie,
+    pilny_uczen,
+    ministrant,
+    lektor,
+    ksiadz,
+    biskup,
+    blogoslawiony
+}
+
 export interface AchievementInfo {
     id: number,
     name: string,
